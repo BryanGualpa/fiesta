@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Panel de asistencia</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #faf8f5;
+      --surface: #ffffff;
+      --border: #e8e2d9;
+      --text: #1a1714;
+      --muted: #8a8278;
+      --yes: #2d7a5f;
+      --yes-light: #edf7f3;
+      --yes-border: #a8d8c8;
+      --no: #c0392b;
+      --no-light: #fdf0ee;
+      --no-border: #f0c0bc;
+      --accent: #b8956a;
+      --shadow: 0 2px 20px rgba(0,0,0,0.06);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      padding: 2rem 1rem 4rem;
+    }
+
+    /* ── ACCESO DENEGADO ── */
+    #denied {
+      display: none;
+      text-align: center;
+      max-width: 360px;
+      margin: 8rem auto;
+    }
+    #denied .lock { font-size: 3rem; margin-bottom: 1rem; }
+    #denied h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 400; margin-bottom: 0.5rem; }
+    #denied p { color: var(--muted); font-size: 0.9rem; }
+
+    /* ── APP ── */
+    #app { display: none; max-width: 700px; margin: 0 auto; }
+
+    /* ── HEADER ── */
+    header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      display: inline-block;
+      background: #f0ebe3;
+      color: var(--accent);
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 400;
+      margin-bottom: 0.3rem;
+    }
+
+    .subtitle { color: var(--muted); font-size: 0.85rem; }
+
+    .refresh-btn {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+      align-self: flex-start;
+      margin-top: 0.25rem;
+    }
+    .refresh-btn:hover { border-color: var(--accent); color: var(--text); }
+
+    /* ── STATS ── */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 1.8rem;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.1rem 1rem;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+    .stat-card .num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      font-weight: 600;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat-card .lbl { font-size: 12px; color: var(--muted); letter-spacing: 0.5px; }
+    .stat-card.total .num { color: var(--text); }
+    .stat-card.si-card .num { color: var(--yes); }
+    .stat-card.no-card .num { color: var(--no); }
+
+    /* ── BARRA DE PROGRESO ── */
+    .prog-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.1rem 1.2rem;
+      margin-bottom: 1.8rem;
+      box-shadow: var(--shadow);
+    }
+    .prog-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .prog-track {
+      height: 8px;
+      background: var(--no-light);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .prog-fill {
+      height: 100%;
+      background: var(--yes);
+      border-radius: 4px;
+      transition: width 0.6s ease;
+    }
+
+    /* ── FILTROS ── */
+    .filters {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 7px 16px;
+      border-radius: 20px;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.15s;
+      color: var(--muted);
+    }
+    .filter-btn:hover { border-color: var(--accent); color: var(--text); }
+    .filter-btn.active { background: var(--text); border-color: var(--text); color: #fff; }
+
+    /* ── LISTA ── */
+    .lista { display: flex; flex-direction: column; gap: 8px; }
+
+    .persona {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.9rem 1.1rem;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+      animation: slideIn 0.25s ease;
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .persona.si-row { border-left: 3px solid var(--yes); }
+    .persona.no-row { border-left: 3px solid var(--no); }
+
+    .avatar {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 500; font-size: 14px;
+      flex-shrink: 0;
+    }
+    .avatar.si { background: var(--yes-light); color: var(--yes); }
+    .avatar.no { background: var(--no-light); color: var(--no); }
+
+    .persona-info { flex: 1; min-width: 0; }
+    .persona-nombre { font-weight: 500; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .persona-fecha  { font-size: 11px; color: var(--muted); margin-top: 1px; }
+
+    .badge {
+      font-size: 11px;
+      font-weight: 500;
+      padding: 3px 10px;
+      border-radius: 20px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .badge.si { background: var(--yes-light); color: var(--yes); border: 1px solid var(--yes-border); }
+    .badge.no { background: var(--no-light);  color: var(--no);  border: 1px solid var(--no-border); }
+
+    /* ── VACÍO / CARGA ── */
+    .empty {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--muted);
+    }
+    .empty .icon { font-size: 2.5rem; margin-bottom: 0.7rem; }
+    .empty p { font-size: 0.9rem; }
+
+    /* ── BUSCAR ── */
+    .search-wrap { position: relative; margin-bottom: 1rem; }
+    .search-wrap input {
+      width: 100%;
+      padding: 11px 16px 11px 38px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      background: var(--surface);
+      outline: none;
+      color: var(--text);
+      transition: border-color 0.2s;
+    }
+    .search-wrap input:focus { border-color: var(--accent); }
+    .search-wrap .ico {
+      position: absolute; left: 12px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 14px; color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+
+<div id="denied">
+  <div class="lock">🔒</div>
+  <h2>Acceso restringido</h2>
+  <p>Esta página es solo para el organizador.</p>
+</div>
+
+<div id="app">
+  <header>
+    <div>
+      <span class="tag">Panel de administrador</span>
+      <!-- ══ CAMBIA EL NOMBRE DEL EVENTO ══ -->
+      <h1>Lista de asistencia</h1>
+      <p class="subtitle" id="ultima-act">Cargando...</p>
+    </div>
+    <button class="refresh-btn" onclick="cargar()">↻ Actualizar</button>
+  </header>
+
+  <!-- Estadísticas -->
+  <div class="stats">
+    <div class="stat-card total">
+      <div class="num" id="n-total">—</div>
+      <div class="lbl">Total respuestas</div>
+    </div>
+    <div class="stat-card si-card">
+      <div class="num" id="n-si">—</div>
+      <div class="lbl">Asistirán ✓</div>
+    </div>
+    <div class="stat-card no-card">
+      <div class="num" id="n-no">—</div>
+      <div class="lbl">No podrán ir ✕</div>
+    </div>
+  </div>
+
+  <!-- Barra -->
+  <div class="prog-wrap">
+    <div class="prog-label">
+      <span>Confirmados que asisten</span>
+      <span id="pct-txt">—%</span>
+    </div>
+    <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+  </div>
+
+  <!-- Búsqueda -->
+  <div class="search-wrap">
+    <span class="ico">🔍</span>
+    <input type="text" id="buscar" placeholder="Buscar por nombre..." oninput="renderLista()"/>
+  </div>
+
+  <!-- Filtros -->
+  <div class="filters">
+    <button class="filter-btn active" data-f="todos" onclick="setFiltro(this)">Todos</button>
+    <button class="filter-btn" data-f="si" onclick="setFiltro(this)">✓ Asistirán</button>
+    <button class="filter-btn" data-f="no" onclick="setFiltro(this)">✕ No asistirán</button>
+  </div>
+
+  <!-- Lista -->
+  <div class="lista" id="lista"></div>
+</div>
+
+<script>
+  // ═══════════════════════════════════════════════════════
+  //  ⚙️  CONFIGURACIÓN — MISMOS VALORES QUE index.html
+  // ═══════════════════════════════════════════════════════
+
+  const TOKEN_ADMIN = "admin2024secret";  // token solo para el admin (diferente al de invitados)
+  const JSONBIN_KEY = "TU_MASTER_KEY";
+  const BIN_ID      = "TU_BIN_ID";
+
+  // ═══════════════════════════════════════════════════════
+  //  LÓGICA
+  // ═══════════════════════════════════════════════════════
+
+  const API = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
+  const H   = { "Content-Type":"application/json", "X-Master-Key": JSONBIN_KEY, "X-Bin-Versioning":"false" };
+
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("token") !== TOKEN_ADMIN) {
+    document.getElementById("denied").style.display = "block";
+  } else {
+    document.getElementById("app").style.display = "block";
+    cargar();
+  }
+
+  let todosLosVotos = [];
+  let filtroActivo = "todos";
+
+  async function cargar() {
+    document.getElementById("ultima-act").textContent = "Actualizando...";
+    try {
+      const r = await fetch(API + "/latest", { headers: H });
+      const d = await r.json();
+      todosLosVotos = (d.record.votos || []).slice().reverse(); // más reciente primero
+      actualizarStats();
+      renderLista();
+      const now = new Date().toLocaleTimeString("es-EC");
+      document.getElementById("ultima-act").textContent = `Última actualización: ${now}`;
+    } catch(e) {
+      document.getElementById("ultima-act").textContent = "Error al cargar datos.";
+    }
+  }
+
+  function actualizarStats() {
+    const si    = todosLosVotos.filter(v => v.opcion === "si").length;
+    const no    = todosLosVotos.filter(v => v.opcion === "no").length;
+    const total = todosLosVotos.length;
+    const pct   = total ? Math.round(si / total * 100) : 0;
+
+    document.getElementById("n-total").textContent = total;
+    document.getElementById("n-si").textContent    = si;
+    document.getElementById("n-no").textContent    = no;
+    document.getElementById("pct-txt").textContent = pct + "%";
+    document.getElementById("prog-fill").style.width = pct + "%";
+  }
+
+  function renderLista() {
+    const busqueda = document.getElementById("buscar").value.toLowerCase().trim();
+    let votos = todosLosVotos;
+
+    if (filtroActivo !== "todos") votos = votos.filter(v => v.opcion === filtroActivo);
+    if (busqueda) votos = votos.filter(v => v.nombre.toLowerCase().includes(busqueda));
+
+    const lista = document.getElementById("lista");
+
+    if (votos.length === 0) {
+      lista.innerHTML = `<div class="empty"><div class="icon">${busqueda ? "🔍" : "📭"}</div><p>${busqueda ? "Sin resultados para esa búsqueda." : "Todavía no hay respuestas."}</p></div>`;
+      return;
+    }
+
+    lista.innerHTML = votos.map(v => {
+      const iniciales = v.nombre.trim().split(" ").slice(0,2).map(n => n[0].toUpperCase()).join("");
+      const esSi = v.opcion === "si";
+      return `
+        <div class="persona ${esSi ? "si-row" : "no-row"}">
+          <div class="avatar ${esSi ? "si" : "no"}">${iniciales}</div>
+          <div class="persona-info">
+            <div class="persona-nombre">${v.nombre}</div>
+            <div class="persona-fecha">${v.fecha || ""}</div>
+          </div>
+          <span class="badge ${esSi ? "si" : "no"}">${esSi ? "✓ Asistirá" : "✕ No asistirá"}</span>
+        </div>`;
+    }).join("");
+  }
+
+  function setFiltro(btn) {
+    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    filtroActivo = btn.dataset.f;
+    renderLista();
+  }
+</script>
+</body>
+</html>

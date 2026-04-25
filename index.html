@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mis XV Años 🌸</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --rosa:       #f4a7b9;
+      --rosa-dark:  #e07a95;
+      --rosa-light: #fde8ef;
+      --rosa-pale:  #fff0f5;
+      --lila:       #d8b4e2;
+      --lila-light: #f3e8fa;
+      --menta:      #b5ddd8;
+      --menta-light:#e8f7f5;
+      --durazno:    #f9c8a0;
+      --crema:      #fdf6f0;
+      --text:       #5a3a4a;
+      --muted:      #b08a9a;
+      --surface:    #ffffff;
+      --no:         #e07a95;
+      --no-light:   #fde8ef;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #fde8ef 0%, #f3e8fa 40%, #e8f7f5 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      font-family: 'Jost', sans-serif;
+      color: var(--text);
+    }
+
+    /* Flores decorativas de fondo */
+    body::before {
+      content: '🌸🌷🌸🌷🌸🌷🌸🌷🌸🌷';
+      position: fixed;
+      top: -10px;
+      left: 0;
+      right: 0;
+      font-size: 1.8rem;
+      letter-spacing: 12px;
+      opacity: 0.18;
+      white-space: nowrap;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    body::after {
+      content: '🌷🌸🌷🌸🌷🌸🌷🌸🌷🌸';
+      position: fixed;
+      bottom: -10px;
+      left: 0;
+      right: 0;
+      font-size: 1.8rem;
+      letter-spacing: 12px;
+      opacity: 0.18;
+      white-space: nowrap;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    /* ── ACCESO DENEGADO ── */
+    #denied {
+      display: none;
+      text-align: center;
+      background: var(--surface);
+      border-radius: 24px;
+      padding: 3rem 2rem;
+      box-shadow: 0 8px 40px rgba(240,130,160,0.15);
+      max-width: 360px;
+    }
+    #denied .lock { font-size: 3rem; margin-bottom: 1rem; }
+    #denied h2 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.2rem;
+      color: var(--rosa-dark);
+      margin-bottom: .5rem;
+    }
+    #denied p { color: var(--muted); font-size: .9rem; }
+
+    /* ── TARJETA PRINCIPAL ── */
+    #app { display: none; width: 100%; max-width: 500px; }
+
+    .card {
+      background: var(--surface);
+      border-radius: 28px;
+      padding: 0;
+      box-shadow: 0 12px 50px rgba(240,130,160,0.18), 0 2px 12px rgba(0,0,0,0.05);
+      overflow: hidden;
+    }
+
+    /* ── HEADER DECORATIVO ── */
+    .card-header {
+      background: linear-gradient(160deg, #fde8ef 0%, #f3e8fa 60%, #e8f7f5 100%);
+      padding: 2.5rem 2rem 1.5rem;
+      text-align: center;
+      position: relative;
+      border-bottom: 1px solid #f7d6e4;
+    }
+
+    .flores-top {
+      font-size: 1.5rem;
+      letter-spacing: 8px;
+      margin-bottom: 0.8rem;
+      opacity: 0.7;
+    }
+
+    .xv-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--rosa), var(--lila));
+      color: white;
+      font-family: 'Great Vibes', cursive;
+      font-size: 1.2rem;
+      padding: 6px 20px;
+      border-radius: 30px;
+      margin-bottom: 1rem;
+      letter-spacing: 1px;
+    }
+
+    .nombre-quinceañera {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3.2rem;
+      color: var(--rosa-dark);
+      line-height: 1.1;
+      margin-bottom: 0.4rem;
+      text-shadow: 0 2px 8px rgba(224,122,149,0.2);
+    }
+
+    .xv-numero {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-style: italic;
+      color: var(--muted);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    /* ── DETALLES DEL EVENTO ── */
+    .evento-info {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      margin-top: 1.2rem;
+    }
+
+    .info-pill {
+      background: white;
+      border: 1px solid #f7d6e4;
+      padding: 8px 16px;
+      font-size: 12px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .info-pill:first-child { border-radius: 20px 0 0 20px; border-right: none; }
+    .info-pill:last-child  { border-radius: 0 20px 20px 0; border-left: none; }
+    .info-pill strong { color: var(--text); font-weight: 500; }
+
+    /* ── CUERPO DEL FORMULARIO ── */
+    .card-body { padding: 2rem 2rem 2.5rem; }
+
+    .pregunta {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.55rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--text);
+      text-align: center;
+      margin-bottom: 0.5rem;
+      line-height: 1.3;
+    }
+
+    .subtexto {
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 1.8rem;
+      line-height: 1.6;
+    }
+
+    /* ── INPUT ── */
+    .field-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 7px;
+      display: block;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 13px 16px;
+      border: 1.5px solid #f7d6e4;
+      border-radius: 14px;
+      font-family: 'Jost', sans-serif;
+      font-size: .95rem;
+      color: var(--text);
+      background: var(--rosa-pale);
+      outline: none;
+      transition: border-color .2s, background .2s;
+      margin-bottom: 1.5rem;
+    }
+    input[type="text"]:focus {
+      border-color: var(--rosa);
+      background: #fff;
+    }
+    input[type="text"]::placeholder { color: #d4b0be; }
+
+    /* ── BOTONES SÍ / NO ── */
+    .btns { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .btn {
+      border: 2px solid transparent;
+      border-radius: 16px;
+      padding: 1.3rem 1rem;
+      cursor: pointer;
+      font-family: 'Jost', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      transition: all .2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn:active { transform: scale(.97); }
+    .btn:disabled { cursor: default; opacity: .7; }
+
+    .btn-si {
+      background: linear-gradient(135deg, #fde8ef, #f3e8fa);
+      border-color: var(--rosa);
+    }
+    .btn-si:hover:not(:disabled) {
+      background: linear-gradient(135deg, var(--rosa), var(--lila));
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(240,130,160,0.35);
+    }
+    .btn-si:hover:not(:disabled) .btn-word { color: white; }
+    .btn-si:hover:not(:disabled) .btn-hint { color: rgba(255,255,255,0.8); }
+
+    .btn-no {
+      background: var(--menta-light);
+      border-color: var(--menta);
+    }
+    .btn-no:hover:not(:disabled) {
+      background: var(--menta);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(181,221,216,0.5);
+    }
+
+    .btn .btn-icon { font-size: 1.8rem; }
+    .btn .btn-word { font-size: 1rem; font-weight: 500; color: var(--text); }
+    .btn .btn-hint { font-size: 11px; color: var(--muted); }
+
+    .msg {
+      margin-top: 1rem;
+      min-height: 18px;
+      font-size: 13px;
+      text-align: center;
+      color: var(--muted);
+      font-style: italic;
+    }
+    .msg.error { color: var(--rosa-dark); font-style: normal; }
+
+    /* ── PANTALLA GRACIAS ── */
+    #gracias {
+      display: none;
+      text-align: center;
+      padding: 1rem 0 0.5rem;
+    }
+    .gracias-flores { font-size: 2.5rem; margin-bottom: 0.8rem; letter-spacing: 5px; }
+    #gracias h2 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.8rem;
+      color: var(--rosa-dark);
+      margin-bottom: 0.4rem;
+    }
+    #gracias .sub { color: var(--muted); font-size: .9rem; margin-bottom: 0.5rem; }
+    #gracias .resp-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-style: italic;
+      color: var(--text);
+      background: var(--rosa-light);
+      border-radius: 30px;
+      padding: 8px 24px;
+      display: inline-block;
+      margin-top: 0.3rem;
+      border: 1px solid #f7d6e4;
+    }
+    #gracias .resp-name.no {
+      background: var(--menta-light);
+      border-color: var(--menta);
+    }
+
+    /* ── FOOTER ── */
+    .card-footer {
+      text-align: center;
+      padding: 0.8rem 2rem 1.2rem;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 1px;
+      border-top: 1px solid #f7d6e4;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Acceso denegado -->
+<div id="denied">
+  <div class="lock">🔒</div>
+  <h2>Invitación privada</h2>
+  <p>Necesitas un link de invitación para ver esta página.</p>
+</div>
+
+<!-- Tarjeta principal -->
+<div id="app">
+  <div class="card">
+
+    <!-- Header -->
+    <div class="card-header">
+      <div class="flores-top">🌸 🌷 💐 🌷 🌸</div>
+      <div class="xv-badge">✨ Quinceañera ✨</div>
+      <!-- ══ CAMBIA EL NOMBRE ══ -->
+      <div class="nombre-quinceañera">Valentina</div>
+      <div class="xv-numero">— Mis XV Años —</div>
+
+      <!-- ══ CAMBIA LA FECHA Y EL LUGAR ══ -->
+      <div class="evento-info">
+        <div class="info-pill">📅 <strong>15 de Junio, 2025</strong></div>
+        <div class="info-pill">📍 <strong>Salón Versalles</strong></div>
+      </div>
+    </div>
+
+    <!-- Formulario -->
+    <div class="card-body">
+      <div id="formulario">
+        <p class="pregunta">¿Nos acompañarás en esta noche especial?</p>
+        <p class="subtexto">Por favor confirma tu asistencia escribiendo tu nombre completo.</p>
+
+        <label class="field-label" for="nombre">Tu nombre y apellido</label>
+        <input type="text" id="nombre" placeholder="Ej: María García" autocomplete="name"/>
+
+        <div class="btns">
+          <button class="btn btn-si" id="btn-si" onclick="votar('si')">
+            <span class="btn-icon">🎀</span>
+            <span class="btn-word">¡Sí asistiré!</span>
+            <span class="btn-hint">Con mucho gusto</span>
+          </button>
+          <button class="btn btn-no" id="btn-no" onclick="votar('no')">
+            <span class="btn-icon">💌</span>
+            <span class="btn-word">No podré ir</span>
+            <span class="btn-hint">Lo siento mucho</span>
+          </button>
+        </div>
+        <div class="msg" id="msg"></div>
+      </div>
+
+      <!-- Pantalla de gracias -->
+      <div id="gracias">
+        <div class="gracias-flores" id="g-flores">🌸 🎀 🌸</div>
+        <h2 id="g-titulo">¡Gracias!</h2>
+        <p class="sub" id="g-sub">Tu respuesta fue registrada</p>
+        <span class="resp-name" id="g-nombre"></span>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      🌷 &nbsp; Con amor, la familia &nbsp; 🌷
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp }  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getDatabase, ref, push, serverTimestamp }
+                            from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey:            "AIzaSyD24pguFCa1X0x4pJ2JaBTJfN9MOoman28",
+    authDomain:        "fiesta-84835.firebaseapp.com",
+    databaseURL:       "https://fiesta-84835-default-rtdb.firebaseio.com",
+    projectId:         "fiesta-84835",
+    storageBucket:     "fiesta-84835.firebasestorage.app",
+    messagingSenderId: "668059109240",
+    appId:             "1:668059109240:web:4557991532e0f099226a8d"
+  };
+
+  const TOKEN_INVITADO = "invitado2024";
+
+  const app = initializeApp(firebaseConfig);
+  const db  = getDatabase(app);
+
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("token") !== TOKEN_INVITADO) {
+    document.getElementById("denied").style.display = "flex";
+    document.getElementById("denied").style.flexDirection = "column";
+    document.getElementById("denied").style.alignItems = "center";
+  } else {
+    document.getElementById("app").style.display = "block";
+    if (sessionStorage.getItem("ya_vote")) {
+      mostrarGracias(sessionStorage.getItem("yv_nombre"), sessionStorage.getItem("yv_opcion"));
+    }
+  }
+
+  window.votar = async function(opcion) {
+    const nombre = document.getElementById("nombre").value.trim();
+    if (!nombre) {
+      setMsg("Por favor escribe tu nombre y apellido 🌸", "error");
+      document.getElementById("nombre").focus();
+      return;
+    }
+    if (nombre.split(" ").filter(Boolean).length < 2) {
+      setMsg("Escribe tu nombre Y apellido separados por espacio.", "error");
+      return;
+    }
+    setMsg("Guardando tu respuesta... 💕", "");
+    document.getElementById("btn-si").disabled = true;
+    document.getElementById("btn-no").disabled = true;
+
+    try {
+      await push(ref(db, "votos"), {
+        nombre, opcion,
+        fecha: new Date().toLocaleString("es-EC", { dateStyle:"short", timeStyle:"short" }),
+        timestamp: serverTimestamp()
+      });
+      sessionStorage.setItem("ya_vote",   "1");
+      sessionStorage.setItem("yv_nombre", nombre);
+      sessionStorage.setItem("yv_opcion", opcion);
+      mostrarGracias(nombre, opcion);
+    } catch(e) {
+      setMsg("Error de conexión. Intenta de nuevo.", "error");
+      document.getElementById("btn-si").disabled = false;
+      document.getElementById("btn-no").disabled = false;
+    }
+  };
+
+  function mostrarGracias(nombre, opcion) {
+    document.getElementById("formulario").style.display = "none";
+    document.getElementById("gracias").style.display = "block";
+    if (opcion === "si") {
+      document.getElementById("g-flores").textContent  = "🌸 🎀 🌸";
+      document.getElementById("g-titulo").textContent  = "¡Nos vemos allá!";
+      document.getElementById("g-sub").textContent     = "Tu asistencia fue confirmada 💕";
+      const n = document.getElementById("g-nombre");
+      n.textContent  = nombre + " — Sí asistirá 🎀";
+      n.className    = "resp-name";
+    } else {
+      document.getElementById("g-flores").textContent  = "💌 🌷 💌";
+      document.getElementById("g-titulo").textContent  = "¡Gracias por avisar!";
+      document.getElementById("g-sub").textContent     = "Te echaremos de menos 🌷";
+      const n = document.getElementById("g-nombre");
+      n.textContent  = nombre + " — No podrá ir";
+      n.className    = "resp-name no";
+    }
+  }
+
+  function setMsg(txt, tipo) {
+    const el = document.getElementById("msg");
+    el.textContent = txt;
+    el.className = "msg " + (tipo || "");
+  }
+</script>
+</body>
+</html>
