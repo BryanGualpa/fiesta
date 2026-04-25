@@ -33,9 +33,6 @@
       overflow-x: hidden;
     }
 
-    /* ══════════════════════════════════
-       CANVAS DE PARTÍCULAS (fondo)
-    ══════════════════════════════════ */
     #canvas-flores {
       position: fixed;
       top: 0; left: 0;
@@ -44,9 +41,6 @@
       z-index: 0;
     }
 
-    /* ══════════════════════════════════
-       BOTÓN DE MÚSICA
-    ══════════════════════════════════ */
     #music-btn {
       position: fixed;
       bottom: 20px;
@@ -70,9 +64,6 @@
       50%      { box-shadow: 0 4px 28px rgba(240,130,160,0.8); }
     }
 
-    /* ══════════════════════════════════
-       ACCESO DENEGADO
-    ══════════════════════════════════ */
     #denied {
       display: none;
       text-align: center;
@@ -87,9 +78,6 @@
     #denied h2 { font-family:'Great Vibes',cursive; font-size:2.2rem; color:var(--rosa-dark); margin-bottom:.5rem; }
     #denied p { color:var(--muted); font-size:.9rem; }
 
-    /* ══════════════════════════════════
-       TARJETA PRINCIPAL
-    ══════════════════════════════════ */
     #app {
       display: none;
       width: 100%;
@@ -110,7 +98,6 @@
       to   { opacity:1; transform:translateY(0); }
     }
 
-    /* ── HEADER ── */
     .card-header {
       background: linear-gradient(160deg, #fde8ef 0%, #f3e8fa 60%, #e8f7f5 100%);
       padding: 2.2rem 2rem 1.5rem;
@@ -119,7 +106,6 @@
       border-bottom: 1px solid #f7d6e4;
     }
 
-    /* Corona decorativa */
     .corona {
       font-size: 2rem;
       display: block;
@@ -175,7 +161,6 @@
       margin-bottom: .5rem;
     }
 
-    /* Línea decorativa */
     .divider {
       display: flex;
       align-items: center;
@@ -213,7 +198,6 @@
     .info-pill:last-child  { border-radius: 0 20px 20px 0; border-left: none; }
     .info-pill strong { color: var(--text); font-weight: 500; }
 
-    /* Mariposas decorativas en header */
     .mariposas-header {
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -235,7 +219,6 @@
       50%      { transform: translateY(-8px) rotate(5deg); }
     }
 
-    /* ── CUERPO ── */
     .card-body { padding: 2rem 2rem 2.2rem; }
 
     .pregunta {
@@ -285,7 +268,6 @@
     }
     input[type="text"]::placeholder { color: #d4b0be; }
 
-    /* ── BOTONES ── */
     .btns { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .btn {
       border: 2px solid transparent;
@@ -341,7 +323,6 @@
     }
     .msg.error { color: var(--rosa-dark); font-style: normal; }
 
-    /* ── GRACIAS ── */
     #gracias { display:none; text-align:center; padding:1rem 0 .5rem; }
     .gracias-flores { font-size: 2.5rem; margin-bottom: .8rem; letter-spacing: 5px; }
     #gracias h2 {
@@ -378,7 +359,6 @@
       color: var(--muted);
     }
 
-    /* ── PANTALLA DE BIENVENIDA ── */
     #bienvenida {
       position: fixed;
       inset: 0;
@@ -454,7 +434,6 @@
       gap: 5px;
     }
 
-    /* ── FOOTER ── */
     .card-footer {
       text-align: center;
       padding: .8rem 2rem 1.1rem;
@@ -466,7 +445,6 @@
 </head>
 <body>
 
-<!-- ══ PANTALLA DE BIENVENIDA ══ -->
 <div id="bienvenida">
   <div class="bienvenida-corona">👑</div>
   <div class="bienvenida-titulo">Julieth Melo</div>
@@ -478,29 +456,21 @@
   <p class="bienvenida-nota">🔊 Con música de fondo</p>
 </div>
 
-<!-- Canvas flores y mariposas cayendo -->
 <canvas id="canvas-flores"></canvas>
-
-<!-- Botón música -->
 <button id="music-btn" onclick="toggleMusica()" title="Música">🎵</button>
 
-<!-- Audio -->
 <audio id="audio-bg" loop preload="auto">
   <source src="musica.mp3" type="audio/mpeg"/>
 </audio>
 
-<!-- Acceso denegado -->
 <div id="denied">
   <div class="lock">🔒</div>
   <h2>Invitación privada</h2>
   <p>Necesitas un link de invitación para ver esta página.</p>
 </div>
 
-<!-- App principal -->
 <div id="app">
   <div class="card">
-
-    <!-- Header -->
     <div class="card-header">
       <div class="mariposas-header">
         <span class="m-deco">🦋</span>
@@ -520,7 +490,6 @@
       </div>
     </div>
 
-    <!-- Formulario -->
     <div class="card-body">
       <div id="formulario">
         <p class="pregunta">¿Nos acompañarás a celebrar esta noche tan especial?</p>
@@ -544,7 +513,6 @@
         <div class="msg" id="msg"></div>
       </div>
 
-      <!-- Pantalla gracias -->
       <div id="gracias">
         <div class="gracias-flores" id="g-flores">🌸 🎀 🌸</div>
         <h2 id="g-titulo">¡Gracias!</h2>
@@ -561,9 +529,7 @@
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════
-     CANVAS: flores y mariposas cayendo
-══════════════════════════════════════════════ -->
+<!-- Canvas partículas -->
 <script>
 (function() {
   const canvas = document.getElementById("canvas-flores");
@@ -629,9 +595,7 @@
 })();
 </script>
 
-<!-- ══════════════════════════════════════════════
-     MÚSICA Y LÓGICA
-══════════════════════════════════════════════ -->
+<!-- Lógica principal con token cifrado SHA-256 -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getDatabase, ref, push, get, serverTimestamp }
@@ -647,7 +611,25 @@
     appId:             "1:668059109240:web:4557991532e0f099226a8d"
   };
 
-  const TOKEN_INVITADO = "invitado2024";
+  // ══════════════════════════════════════════════════════════════
+  //  SEGURIDAD: El token ya NO está en texto plano.
+  //  Aquí solo está el HASH SHA-256 del token real.
+  //  Nadie puede recuperar el token original desde este hash.
+  //  El token real solo viaja en el ?token= del link privado.
+  //  Para cambiar el token, genera un nuevo hash con:
+  //    https://emn178.github.io/online-tools/sha256.html
+  // ══════════════════════════════════════════════════════════════
+  const TOKEN_HASH_ESPERADO = "6c06fa97886538cfb985a4b21411e23c7da3d82b1b80864d04540ed68b4d3a50";
+
+  // Función para calcular SHA-256 del token recibido por URL
+  async function sha256(texto) {
+    const encoder = new TextEncoder();
+    const datos   = encoder.encode(texto);
+    const buffer  = await crypto.subtle.digest("SHA-256", datos);
+    return Array.from(new Uint8Array(buffer))
+      .map(b => b.toString(16).padStart(2, "0"))
+      .join("");
+  }
 
   const fbApp = initializeApp(firebaseConfig);
   const db    = getDatabase(fbApp);
@@ -655,13 +637,10 @@
   const btn   = document.getElementById("music-btn");
   let musicaActiva = false;
 
-  // ── Función del botón de bienvenida ──
   window.entrar = function() {
     const bienvenida = document.getElementById("bienvenida");
     bienvenida.classList.add("ocultar");
     setTimeout(() => { bienvenida.style.display = "none"; }, 800);
-
-    // Arrancar música inmediatamente (el clic del usuario lo permite)
     audio.volume = 0.6;
     audio.play().then(() => {
       musicaActiva = true;
@@ -670,18 +649,30 @@
     }).catch(() => {});
   };
 
-  // ── Verificar token ──
-  const params = new URLSearchParams(window.location.search);
-  if (params.get("token") !== TOKEN_INVITADO) {
-    document.getElementById("denied").style.display = "flex";
-    document.getElementById("denied").style.flexDirection = "column";
-    document.getElementById("denied").style.alignItems = "center";
-  } else {
-    document.getElementById("app").style.display = "block";
-    if (sessionStorage.getItem("ya_vote")) {
-      mostrarGracias(sessionStorage.getItem("yv_nombre"), sessionStorage.getItem("yv_opcion"), true);
+  // ── Verificar token con SHA-256 ──
+  const params     = new URLSearchParams(window.location.search);
+  const tokenUrl   = params.get("token") || "";
+
+  sha256(tokenUrl).then(hashCalculado => {
+    if (hashCalculado !== TOKEN_HASH_ESPERADO) {
+      // Token inválido → mostrar pantalla de acceso denegado
+      document.getElementById("bienvenida").style.display = "none";
+      const d = document.getElementById("denied");
+      d.style.display        = "flex";
+      d.style.flexDirection  = "column";
+      d.style.alignItems     = "center";
+    } else {
+      // Token válido → mostrar la app
+      document.getElementById("app").style.display = "block";
+      if (sessionStorage.getItem("ya_vote")) {
+        mostrarGracias(
+          sessionStorage.getItem("yv_nombre"),
+          sessionStorage.getItem("yv_opcion"),
+          true
+        );
+      }
     }
-  }
+  });
 
   window.toggleMusica = function() {
     if (audio.paused) {
@@ -697,7 +688,6 @@
     }
   };
 
-  // ── Votar ──
   window.votar = async function(opcion) {
     const nombre = document.getElementById("nombre").value.trim();
     if (!nombre) {
@@ -765,7 +755,6 @@
 
     if (sinContador) return;
 
-    // Cuenta regresiva con barra visual
     let seg = 10;
     const fill   = document.getElementById("c-fill");
     const contEl = document.getElementById("contador");
