@@ -382,7 +382,7 @@
 
 <script type="module">
   import { initializeApp }  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getDatabase, ref, push, serverTimestamp }
+  import { getDatabase, ref, push, get, serverTimestamp }
                             from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
   const firebaseConfig = {
@@ -423,11 +423,25 @@
       setMsg("Escribe tu nombre Y apellido separados por espacio.", "error");
       return;
     }
-    setMsg("Guardando tu respuesta... 💕", "");
+    setMsg("Verificando... 💕", "");
     document.getElementById("btn-si").disabled = true;
     document.getElementById("btn-no").disabled = true;
 
     try {
+      // Verificar si el nombre ya existe
+      const snapshot = await get(ref(db, "votos"));
+      if (snapshot.exists()) {
+        const votos = Object.values(snapshot.val());
+        const nombreNorm = nombre.toLowerCase().trim();
+        const yaExiste = votos.some(v => v.nombre && v.nombre.toLowerCase().trim() === nombreNorm);
+        if (yaExiste) {
+          setMsg("⚠️ Este nombre ya fue registrado anteriormente.", "error");
+          document.getElementById("btn-si").disabled = false;
+          document.getElementById("btn-no").disabled = false;
+          return;
+        }
+      }
+
       await push(ref(db, "votos"), {
         nombre, opcion,
         fecha: new Date().toLocaleString("es-EC", { dateStyle:"short", timeStyle:"short" }),
