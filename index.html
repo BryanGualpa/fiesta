@@ -378,6 +378,82 @@
       color: var(--muted);
     }
 
+    /* ── PANTALLA DE BIENVENIDA ── */
+    #bienvenida {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: linear-gradient(160deg, #fde8ef 0%, #f3e8fa 50%, #e8f7f5 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      transition: opacity .8s ease;
+    }
+    #bienvenida.ocultar {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .bienvenida-corona {
+      font-size: 3.5rem;
+      margin-bottom: .5rem;
+      animation: float 3s ease-in-out infinite;
+    }
+    .bienvenida-titulo {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3rem;
+      color: var(--rosa-dark);
+      margin-bottom: .3rem;
+      text-shadow: 0 2px 12px rgba(224,122,149,0.3);
+    }
+    .bienvenida-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      color: var(--muted);
+      font-size: 1rem;
+      margin-bottom: 2rem;
+      letter-spacing: 2px;
+    }
+    .bienvenida-flores {
+      font-size: 1.6rem;
+      letter-spacing: 8px;
+      margin-bottom: 2rem;
+      opacity: .7;
+    }
+    #btn-entrar {
+      background: linear-gradient(135deg, var(--rosa), var(--lila));
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 16px 42px;
+      font-family: 'Jost', sans-serif;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      letter-spacing: 1px;
+      box-shadow: 0 8px 28px rgba(240,130,160,0.45);
+      transition: all .2s;
+      animation: pulse-entrar 2s infinite;
+    }
+    #btn-entrar:hover {
+      transform: translateY(-3px) scale(1.04);
+      box-shadow: 0 12px 36px rgba(240,130,160,0.6);
+    }
+    @keyframes pulse-entrar {
+      0%,100% { box-shadow: 0 8px 28px rgba(240,130,160,0.45); }
+      50%      { box-shadow: 0 8px 42px rgba(240,130,160,0.75); }
+    }
+    .bienvenida-nota {
+      margin-top: 1rem;
+      font-size: 11px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
     /* ── FOOTER ── */
     .card-footer {
       text-align: center;
@@ -389,6 +465,18 @@
   </style>
 </head>
 <body>
+
+<!-- ══ PANTALLA DE BIENVENIDA ══ -->
+<div id="bienvenida">
+  <div class="bienvenida-corona">👑</div>
+  <div class="bienvenida-titulo">Julieth Melo</div>
+  <div class="bienvenida-sub">— Mis 15 Años —</div>
+  <div class="bienvenida-flores">🌸 🦋 🌷 🦋 🌸</div>
+  <button id="btn-entrar" onclick="entrar()">
+    🎵 Abrir invitación
+  </button>
+  <p class="bienvenida-nota">🔊 Con música de fondo</p>
+</div>
 
 <!-- Canvas flores y mariposas cayendo -->
 <canvas id="canvas-flores"></canvas>
@@ -567,6 +655,21 @@
   const btn   = document.getElementById("music-btn");
   let musicaActiva = false;
 
+  // ── Función del botón de bienvenida ──
+  window.entrar = function() {
+    const bienvenida = document.getElementById("bienvenida");
+    bienvenida.classList.add("ocultar");
+    setTimeout(() => { bienvenida.style.display = "none"; }, 800);
+
+    // Arrancar música inmediatamente (el clic del usuario lo permite)
+    audio.volume = 0.6;
+    audio.play().then(() => {
+      musicaActiva = true;
+      btn.textContent = "🔊";
+      btn.classList.add("playing");
+    }).catch(() => {});
+  };
+
   // ── Verificar token ──
   const params = new URLSearchParams(window.location.search);
   if (params.get("token") !== TOKEN_INVITADO) {
@@ -575,21 +678,9 @@
     document.getElementById("denied").style.alignItems = "center";
   } else {
     document.getElementById("app").style.display = "block";
-    // Autoplay al primer toque/clic del usuario
-    document.addEventListener("click", iniciarMusica, { once: true });
-    document.addEventListener("touchstart", iniciarMusica, { once: true });
     if (sessionStorage.getItem("ya_vote")) {
       mostrarGracias(sessionStorage.getItem("yv_nombre"), sessionStorage.getItem("yv_opcion"), true);
     }
-  }
-
-  function iniciarMusica() {
-    audio.volume = 0.55;
-    audio.play().then(() => {
-      musicaActiva = true;
-      btn.textContent = "🔊";
-      btn.classList.add("playing");
-    }).catch(() => {});
   }
 
   window.toggleMusica = function() {
