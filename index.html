@@ -330,22 +330,20 @@
     <div class="card-header">
       <div class="flores-top">🌸 🌷 💐 🌷 🌸</div>
       <div class="xv-badge">✨ Quinceañera ✨</div>
-      <!-- ══ CAMBIA EL NOMBRE ══ -->
-      <div class="nombre-quinceañera">Valentina</div>
-      <div class="xv-numero">— Mis XV Años —</div>
+      <div class="nombre-quinceañera">Julieth Melo</div>
+      <div class="xv-numero">— Mis 15 Años —</div>
 
-      <!-- ══ CAMBIA LA FECHA Y EL LUGAR ══ -->
       <div class="evento-info">
-        <div class="info-pill">📅 <strong>15 de Junio, 2025</strong></div>
-        <div class="info-pill">📍 <strong>Salón Versalles</strong></div>
+        <div class="info-pill">📅 <strong>Domingo 13 de Septiembre</strong></div>
+        <div class="info-pill">🕖 <strong>7:00 PM</strong></div>
       </div>
     </div>
 
     <!-- Formulario -->
     <div class="card-body">
       <div id="formulario">
-        <p class="pregunta">¿Nos acompañarás en esta noche especial?</p>
-        <p class="subtexto">Por favor confirma tu asistencia escribiendo tu nombre completo.</p>
+        <p class="pregunta">¿Nos acompañarás a celebrar esta noche tan especial?</p>
+        <p class="subtexto">Con la bendición de Dios y el amor de mi familia, te invito a compartir este día. Confirma tu asistencia con tu nombre completo.</p>
 
         <label class="field-label" for="nombre">Tu nombre y apellido</label>
         <input type="text" id="nombre" placeholder="Ej: María García" autocomplete="name"/>
@@ -371,11 +369,12 @@
         <h2 id="g-titulo">¡Gracias!</h2>
         <p class="sub" id="g-sub">Tu respuesta fue registrada</p>
         <span class="resp-name" id="g-nombre"></span>
+        <p style="margin-top:1.2rem;font-size:12px;color:var(--muted);">Esta página se cerrará en <strong id="contador" style="color:var(--rosa-dark);">10</strong> segundos...</p>
       </div>
     </div>
 
     <div class="card-footer">
-      🌷 &nbsp; Con amor, la familia &nbsp; 🌷
+      🌷 &nbsp; Con amor, Maria Castro & Jonathan Buenaño &nbsp; 🌷
     </div>
   </div>
 </div>
@@ -476,6 +475,20 @@
       n.textContent  = nombre + " — No podrá ir";
       n.className    = "resp-name no";
     }
+
+    // Cuenta regresiva de 10 segundos y cierre
+    let seg = 10;
+    const contEl = document.getElementById("contador");
+    const intervalo = setInterval(() => {
+      seg--;
+      if (contEl) contEl.textContent = seg;
+      if (seg <= 0) {
+        clearInterval(intervalo);
+        window.close();
+        // Si el navegador no permite cerrar, redirige a una página en blanco
+        setTimeout(() => { window.location.href = "about:blank"; }, 300);
+      }
+    }, 1000);
   }
 
   function setMsg(txt, tipo) {
