@@ -31,16 +31,13 @@
       padding: 2rem 1rem 4rem;
     }
 
-    /* ── ACCESO DENEGADO ── */
     #denied { display:none; text-align:center; max-width:360px; margin:8rem auto; background:var(--surface); border-radius:24px; padding:3rem 2rem; box-shadow:var(--shadow); }
     #denied .lock { font-size:3rem; margin-bottom:1rem; }
     #denied h2 { font-family:'Great Vibes',cursive; font-size:2.2rem; color:var(--rosa-dark); margin-bottom:.5rem; }
     #denied p { color:var(--muted); font-size:.9rem; }
 
-    /* ── APP ── */
     #app { display:none; max-width:720px; margin:0 auto; }
 
-    /* ── HEADER ── */
     .page-header {
       background: var(--surface);
       border-radius: 20px;
@@ -99,7 +96,6 @@
     }
     .export-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(240,130,160,0.4); }
 
-    /* ── STATS ── */
     .stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 1.2rem; }
     .stat-card {
       background: var(--surface);
@@ -121,7 +117,6 @@
     .stat-card.si-c  .num { color: #2d7a5f; }
     .stat-card.no-c  .num { color: var(--rosa-dark); }
 
-    /* ── BARRA ── */
     .prog-wrap {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -134,7 +129,6 @@
     .prog-track { height:8px; background:var(--rosa-light); border-radius:4px; overflow:hidden; }
     .prog-fill  { height:100%; background:linear-gradient(90deg, #2d7a5f, #4caf86); border-radius:4px; transition:width .6s ease; }
 
-    /* ── BÚSQUEDA Y FILTROS ── */
     .controls {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -177,7 +171,6 @@
     .filter-btn:hover { border-color: var(--rosa); color: var(--text); }
     .filter-btn.active { background: linear-gradient(135deg, var(--rosa), var(--lila)); border-color: transparent; color: #fff; }
 
-    /* ── LISTA ── */
     .lista { display:flex; flex-direction:column; gap:8px; }
 
     .persona {
@@ -232,7 +225,6 @@
 </div>
 
 <div id="app">
-
   <div class="page-header">
     <div class="header-left">
       <div class="eyebrow">🌸 15 Años de Julieth Melo — Panel de administrador</div>
@@ -274,16 +266,12 @@
   <div class="lista" id="lista">
     <div class="empty"><div class="icon">🌸</div><p>Cargando datos...</p></div>
   </div>
-
 </div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-  // ════════════════════════════════════════════════
-  //  CONFIGURACIÓN — mismos datos que index.html
-  // ════════════════════════════════════════════════
   const firebaseConfig = {
     apiKey:            "AIzaSyD24pguFCa1X0x4pJ2JaBTJfN9MOoman28",
     authDomain:        "fiesta-84835.firebaseapp.com",
@@ -294,16 +282,33 @@
     appId:             "1:668059109240:web:4557991532e0f099226a8d"
   };
 
-  const TOKEN_ADMIN = "admin2024secret";
-  // ════════════════════════════════════════════════
+  // ══════════════════════════════════════════════════════════════
+  //  SEGURIDAD: Token admin cifrado con SHA-256.
+  //  El token real "admin2024secret" NO aparece en el código.
+  //  Solo viaja en el ?token= del link privado del administrador.
+  // ══════════════════════════════════════════════════════════════
+  const TOKEN_ADMIN_HASH = "56da83941ce93f5da2777dd7e93f358d1892ee6c6d96a5a6e7838eb1e57d86ee";
 
-  const params = new URLSearchParams(window.location.search);
-  if (params.get("token") !== TOKEN_ADMIN) {
-    document.getElementById("denied").style.display = "block";
-  } else {
-    document.getElementById("app").style.display = "block";
-    iniciar();
+  async function sha256(texto) {
+    const encoder = new TextEncoder();
+    const datos   = encoder.encode(texto);
+    const buffer  = await crypto.subtle.digest("SHA-256", datos);
+    return Array.from(new Uint8Array(buffer))
+      .map(b => b.toString(16).padStart(2, "0"))
+      .join("");
   }
+
+  const params   = new URLSearchParams(window.location.search);
+  const tokenUrl = params.get("token") || "";
+
+  sha256(tokenUrl).then(hashCalculado => {
+    if (hashCalculado !== TOKEN_ADMIN_HASH) {
+      document.getElementById("denied").style.display = "block";
+    } else {
+      document.getElementById("app").style.display = "block";
+      iniciar();
+    }
+  });
 
   let todosLosVotos = [];
   let filtroActivo  = "todos";
@@ -312,7 +317,6 @@
     const app = initializeApp(firebaseConfig);
     const db  = getDatabase(app);
 
-    // Escucha en TIEMPO REAL — se actualiza solo cuando alguien vota
     onValue(ref(db, "votos"), (snapshot) => {
       const data = snapshot.val();
       todosLosVotos = data
