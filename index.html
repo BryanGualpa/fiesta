@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Mis XV Años 🌸</title>
+  <title>15 Años Julieth Melo 🌸</title>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -14,58 +14,65 @@
       --rosa-light: #fde8ef;
       --rosa-pale:  #fff0f5;
       --lila:       #d8b4e2;
-      --lila-light: #f3e8fa;
       --menta:      #b5ddd8;
       --menta-light:#e8f7f5;
-      --durazno:    #f9c8a0;
-      --crema:      #fdf6f0;
       --text:       #5a3a4a;
       --muted:      #b08a9a;
       --surface:    #ffffff;
-      --no:         #e07a95;
-      --no-light:   #fde8ef;
     }
 
     body {
       min-height: 100vh;
-      background: linear-gradient(135deg, #fde8ef 0%, #f3e8fa 40%, #e8f7f5 100%);
+      background: linear-gradient(135deg, #fde8ef 0%, #f3e8fa 45%, #e8f7f5 100%);
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 2rem 1rem;
       font-family: 'Jost', sans-serif;
       color: var(--text);
+      overflow-x: hidden;
     }
 
-    /* Flores decorativas de fondo */
-    body::before {
-      content: '🌸🌷🌸🌷🌸🌷🌸🌷🌸🌷';
+    /* ══════════════════════════════════
+       CANVAS DE PARTÍCULAS (fondo)
+    ══════════════════════════════════ */
+    #canvas-flores {
       position: fixed;
-      top: -10px;
-      left: 0;
-      right: 0;
-      font-size: 1.8rem;
-      letter-spacing: 12px;
-      opacity: 0.18;
-      white-space: nowrap;
-      overflow: hidden;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       pointer-events: none;
-    }
-    body::after {
-      content: '🌷🌸🌷🌸🌷🌸🌷🌸🌷🌸';
-      position: fixed;
-      bottom: -10px;
-      left: 0;
-      right: 0;
-      font-size: 1.8rem;
-      letter-spacing: 12px;
-      opacity: 0.18;
-      white-space: nowrap;
-      overflow: hidden;
-      pointer-events: none;
+      z-index: 0;
     }
 
-    /* ── ACCESO DENEGADO ── */
+    /* ══════════════════════════════════
+       BOTÓN DE MÚSICA
+    ══════════════════════════════════ */
+    #music-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 100;
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      border: none;
+      background: linear-gradient(135deg, var(--rosa), var(--lila));
+      color: white;
+      font-size: 1.3rem;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(240,130,160,0.45);
+      transition: transform .2s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    #music-btn:hover { transform: scale(1.1); }
+    #music-btn.playing { animation: pulse-btn 1.5s infinite; }
+    @keyframes pulse-btn {
+      0%,100% { box-shadow: 0 4px 16px rgba(240,130,160,0.45); }
+      50%      { box-shadow: 0 4px 28px rgba(240,130,160,0.8); }
+    }
+
+    /* ══════════════════════════════════
+       ACCESO DENEGADO
+    ══════════════════════════════════ */
     #denied {
       display: none;
       text-align: center;
@@ -74,41 +81,61 @@
       padding: 3rem 2rem;
       box-shadow: 0 8px 40px rgba(240,130,160,0.15);
       max-width: 360px;
+      position: relative; z-index: 1;
     }
     #denied .lock { font-size: 3rem; margin-bottom: 1rem; }
-    #denied h2 {
-      font-family: 'Great Vibes', cursive;
-      font-size: 2.2rem;
-      color: var(--rosa-dark);
-      margin-bottom: .5rem;
-    }
-    #denied p { color: var(--muted); font-size: .9rem; }
+    #denied h2 { font-family:'Great Vibes',cursive; font-size:2.2rem; color:var(--rosa-dark); margin-bottom:.5rem; }
+    #denied p { color:var(--muted); font-size:.9rem; }
 
-    /* ── TARJETA PRINCIPAL ── */
-    #app { display: none; width: 100%; max-width: 500px; }
+    /* ══════════════════════════════════
+       TARJETA PRINCIPAL
+    ══════════════════════════════════ */
+    #app {
+      display: none;
+      width: 100%;
+      max-width: 500px;
+      position: relative;
+      z-index: 1;
+    }
 
     .card {
       background: var(--surface);
       border-radius: 28px;
-      padding: 0;
-      box-shadow: 0 12px 50px rgba(240,130,160,0.18), 0 2px 12px rgba(0,0,0,0.05);
+      box-shadow: 0 16px 60px rgba(240,130,160,0.22), 0 2px 12px rgba(0,0,0,0.05);
       overflow: hidden;
+      animation: fadeUp .8s ease;
+    }
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(30px); }
+      to   { opacity:1; transform:translateY(0); }
     }
 
-    /* ── HEADER DECORATIVO ── */
+    /* ── HEADER ── */
     .card-header {
       background: linear-gradient(160deg, #fde8ef 0%, #f3e8fa 60%, #e8f7f5 100%);
-      padding: 2.5rem 2rem 1.5rem;
+      padding: 2.2rem 2rem 1.5rem;
       text-align: center;
       position: relative;
       border-bottom: 1px solid #f7d6e4;
     }
 
+    /* Corona decorativa */
+    .corona {
+      font-size: 2rem;
+      display: block;
+      margin-bottom: .3rem;
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-6px); }
+    }
+
     .flores-top {
-      font-size: 1.5rem;
-      letter-spacing: 8px;
-      margin-bottom: 0.8rem;
-      opacity: 0.7;
+      font-size: 1.4rem;
+      letter-spacing: 6px;
+      margin-bottom: .8rem;
+      opacity: .75;
     }
 
     .xv-badge {
@@ -117,19 +144,25 @@
       color: white;
       font-family: 'Great Vibes', cursive;
       font-size: 1.2rem;
-      padding: 6px 20px;
+      padding: 6px 22px;
       border-radius: 30px;
       margin-bottom: 1rem;
       letter-spacing: 1px;
+      box-shadow: 0 4px 14px rgba(240,130,160,0.35);
     }
 
     .nombre-quinceañera {
       font-family: 'Great Vibes', cursive;
-      font-size: 3.2rem;
+      font-size: 3.4rem;
       color: var(--rosa-dark);
       line-height: 1.1;
-      margin-bottom: 0.4rem;
-      text-shadow: 0 2px 8px rgba(224,122,149,0.2);
+      margin-bottom: .3rem;
+      text-shadow: 0 2px 12px rgba(224,122,149,0.25);
+      animation: shimmer 4s ease-in-out infinite;
+    }
+    @keyframes shimmer {
+      0%,100% { text-shadow: 0 2px 12px rgba(224,122,149,0.25); }
+      50%      { text-shadow: 0 4px 24px rgba(224,122,149,0.55); }
     }
 
     .xv-numero {
@@ -139,21 +172,38 @@
       color: var(--muted);
       letter-spacing: 3px;
       text-transform: uppercase;
+      margin-bottom: .5rem;
     }
 
-    /* ── DETALLES DEL EVENTO ── */
+    /* Línea decorativa */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: center;
+      margin: .8rem 0;
+      opacity: .5;
+      font-size: .85rem;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      max-width: 60px;
+      height: 1px;
+      background: var(--rosa);
+    }
+
     .evento-info {
       display: flex;
       justify-content: center;
       gap: 0;
-      margin-top: 1.2rem;
+      margin-top: .8rem;
     }
-
     .info-pill {
       background: white;
       border: 1px solid #f7d6e4;
-      padding: 8px 16px;
-      font-size: 12px;
+      padding: 8px 14px;
+      font-size: 11.5px;
       color: var(--muted);
       display: flex;
       align-items: center;
@@ -163,29 +213,49 @@
     .info-pill:last-child  { border-radius: 0 20px 20px 0; border-left: none; }
     .info-pill strong { color: var(--text); font-weight: 500; }
 
-    /* ── CUERPO DEL FORMULARIO ── */
-    .card-body { padding: 2rem 2rem 2.5rem; }
+    /* Mariposas decorativas en header */
+    .mariposas-header {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .m-deco {
+      position: absolute;
+      font-size: 1.1rem;
+      opacity: .35;
+      animation: flutter-deco 4s ease-in-out infinite;
+    }
+    .m-deco:nth-child(1) { top:10%; left:5%;  animation-delay: 0s; }
+    .m-deco:nth-child(2) { top:20%; right:8%; animation-delay: 1s; }
+    .m-deco:nth-child(3) { top:60%; left:8%; animation-delay: 2s; }
+    .m-deco:nth-child(4) { top:70%; right:5%; animation-delay: .5s; }
+    @keyframes flutter-deco {
+      0%,100% { transform: translateY(0) rotate(-5deg); }
+      50%      { transform: translateY(-8px) rotate(5deg); }
+    }
+
+    /* ── CUERPO ── */
+    .card-body { padding: 2rem 2rem 2.2rem; }
 
     .pregunta {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.55rem;
+      font-size: 1.5rem;
       font-weight: 300;
       font-style: italic;
       color: var(--text);
       text-align: center;
-      margin-bottom: 0.5rem;
-      line-height: 1.3;
+      margin-bottom: .5rem;
+      line-height: 1.35;
     }
-
     .subtexto {
-      font-size: 0.82rem;
+      font-size: .82rem;
       color: var(--muted);
       text-align: center;
-      margin-bottom: 1.8rem;
-      line-height: 1.6;
+      margin-bottom: 1.6rem;
+      line-height: 1.7;
     }
 
-    /* ── INPUT ── */
     .field-label {
       font-size: 11px;
       font-weight: 500;
@@ -195,7 +265,6 @@
       margin-bottom: 7px;
       display: block;
     }
-
     input[type="text"] {
       width: 100%;
       padding: 13px 16px;
@@ -206,33 +275,37 @@
       color: var(--text);
       background: var(--rosa-pale);
       outline: none;
-      transition: border-color .2s, background .2s;
-      margin-bottom: 1.5rem;
+      transition: border-color .2s, background .2s, box-shadow .2s;
+      margin-bottom: 1.4rem;
     }
     input[type="text"]:focus {
       border-color: var(--rosa);
       background: #fff;
+      box-shadow: 0 0 0 3px rgba(244,167,185,0.2);
     }
     input[type="text"]::placeholder { color: #d4b0be; }
 
-    /* ── BOTONES SÍ / NO ── */
+    /* ── BOTONES ── */
     .btns { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-
     .btn {
       border: 2px solid transparent;
       border-radius: 16px;
       padding: 1.3rem 1rem;
       cursor: pointer;
       font-family: 'Jost', sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 5px;
-      transition: all .2s;
-      position: relative;
-      overflow: hidden;
+      display: flex; flex-direction: column; align-items: center; gap: 5px;
+      transition: all .22s;
+      position: relative; overflow: hidden;
     }
-    .btn:active { transform: scale(.97); }
+    .btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: white;
+      opacity: 0;
+      transition: opacity .15s;
+    }
+    .btn:active::after { opacity: .15; }
     .btn:disabled { cursor: default; opacity: .7; }
 
     .btn-si {
@@ -242,10 +315,10 @@
     .btn-si:hover:not(:disabled) {
       background: linear-gradient(135deg, var(--rosa), var(--lila));
       transform: translateY(-3px);
-      box-shadow: 0 8px 24px rgba(240,130,160,0.35);
+      box-shadow: 0 10px 28px rgba(240,130,160,0.38);
     }
-    .btn-si:hover:not(:disabled) .btn-word { color: white; }
-    .btn-si:hover:not(:disabled) .btn-hint { color: rgba(255,255,255,0.8); }
+    .btn-si:hover:not(:disabled) .btn-word,
+    .btn-si:hover:not(:disabled) .btn-hint { color: white; }
 
     .btn-no {
       background: var(--menta-light);
@@ -254,7 +327,7 @@
     .btn-no:hover:not(:disabled) {
       background: var(--menta);
       transform: translateY(-3px);
-      box-shadow: 0 8px 24px rgba(181,221,216,0.5);
+      box-shadow: 0 10px 28px rgba(181,221,216,0.5);
     }
 
     .btn .btn-icon { font-size: 1.8rem; }
@@ -262,58 +335,71 @@
     .btn .btn-hint { font-size: 11px; color: var(--muted); }
 
     .msg {
-      margin-top: 1rem;
-      min-height: 18px;
-      font-size: 13px;
-      text-align: center;
-      color: var(--muted);
-      font-style: italic;
+      margin-top: 1rem; min-height: 18px;
+      font-size: 13px; text-align: center;
+      color: var(--muted); font-style: italic;
     }
     .msg.error { color: var(--rosa-dark); font-style: normal; }
 
-    /* ── PANTALLA GRACIAS ── */
-    #gracias {
-      display: none;
-      text-align: center;
-      padding: 1rem 0 0.5rem;
-    }
-    .gracias-flores { font-size: 2.5rem; margin-bottom: 0.8rem; letter-spacing: 5px; }
+    /* ── GRACIAS ── */
+    #gracias { display:none; text-align:center; padding:1rem 0 .5rem; }
+    .gracias-flores { font-size: 2.5rem; margin-bottom: .8rem; letter-spacing: 5px; }
     #gracias h2 {
       font-family: 'Great Vibes', cursive;
-      font-size: 2.8rem;
-      color: var(--rosa-dark);
-      margin-bottom: 0.4rem;
+      font-size: 2.8rem; color: var(--rosa-dark); margin-bottom: .4rem;
     }
-    #gracias .sub { color: var(--muted); font-size: .9rem; margin-bottom: 0.5rem; }
+    #gracias .sub { color:var(--muted); font-size:.9rem; margin-bottom:.5rem; }
     #gracias .resp-name {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.2rem;
-      font-style: italic;
-      color: var(--text);
-      background: var(--rosa-light);
-      border-radius: 30px;
-      padding: 8px 24px;
-      display: inline-block;
-      margin-top: 0.3rem;
+      font-size: 1.2rem; font-style: italic; color: var(--text);
+      background: var(--rosa-light); border-radius: 30px;
+      padding: 8px 24px; display: inline-block; margin-top: .3rem;
       border: 1px solid #f7d6e4;
     }
-    #gracias .resp-name.no {
-      background: var(--menta-light);
-      border-color: var(--menta);
+    #gracias .resp-name.no { background: var(--menta-light); border-color: var(--menta); }
+
+    .countdown-bar {
+      margin-top: 1.2rem;
+      height: 4px;
+      background: #f7d6e4;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .countdown-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--rosa), var(--lila));
+      border-radius: 2px;
+      width: 100%;
+      transition: width 1s linear;
+    }
+    .countdown-txt {
+      margin-top: .5rem;
+      font-size: 12px;
+      color: var(--muted);
     }
 
     /* ── FOOTER ── */
     .card-footer {
       text-align: center;
-      padding: 0.8rem 2rem 1.2rem;
-      font-size: 11px;
-      color: var(--muted);
+      padding: .8rem 2rem 1.1rem;
+      font-size: 11px; color: var(--muted);
       letter-spacing: 1px;
       border-top: 1px solid #f7d6e4;
     }
   </style>
 </head>
 <body>
+
+<!-- Canvas flores y mariposas cayendo -->
+<canvas id="canvas-flores"></canvas>
+
+<!-- Botón música -->
+<button id="music-btn" onclick="toggleMusica()" title="Música">🎵</button>
+
+<!-- Audio -->
+<audio id="audio-bg" loop preload="auto">
+  <source src="musica.mp3" type="audio/mpeg"/>
+</audio>
 
 <!-- Acceso denegado -->
 <div id="denied">
@@ -322,17 +408,24 @@
   <p>Necesitas un link de invitación para ver esta página.</p>
 </div>
 
-<!-- Tarjeta principal -->
+<!-- App principal -->
 <div id="app">
   <div class="card">
 
     <!-- Header -->
     <div class="card-header">
+      <div class="mariposas-header">
+        <span class="m-deco">🦋</span>
+        <span class="m-deco">🌸</span>
+        <span class="m-deco">🦋</span>
+        <span class="m-deco">🌸</span>
+      </div>
+      <span class="corona">👑</span>
       <div class="flores-top">🌸 🌷 💐 🌷 🌸</div>
       <div class="xv-badge">✨ Quinceañera ✨</div>
       <div class="nombre-quinceañera">Julieth Melo</div>
       <div class="xv-numero">— Mis 15 Años —</div>
-
+      <div class="divider">🌸</div>
       <div class="evento-info">
         <div class="info-pill">📅 <strong>Domingo 13 de Septiembre</strong></div>
         <div class="info-pill">🕖 <strong>7:00 PM</strong></div>
@@ -363,26 +456,98 @@
         <div class="msg" id="msg"></div>
       </div>
 
-      <!-- Pantalla de gracias -->
+      <!-- Pantalla gracias -->
       <div id="gracias">
         <div class="gracias-flores" id="g-flores">🌸 🎀 🌸</div>
         <h2 id="g-titulo">¡Gracias!</h2>
         <p class="sub" id="g-sub">Tu respuesta fue registrada</p>
         <span class="resp-name" id="g-nombre"></span>
-        <p style="margin-top:1.2rem;font-size:12px;color:var(--muted);">Esta página se cerrará en <strong id="contador" style="color:var(--rosa-dark);">10</strong> segundos...</p>
+        <div class="countdown-bar"><div class="countdown-fill" id="c-fill"></div></div>
+        <p class="countdown-txt">Cerrando en <strong id="contador">10</strong> segundos...</p>
       </div>
     </div>
 
     <div class="card-footer">
-      🌷 &nbsp; Con amor, Maria Castro & Jonathan Buenaño &nbsp; 🌷
+      🌷 &nbsp; Con amor, Maria Castro &amp; Jonathan Buenaño &nbsp; 🌷
     </div>
   </div>
 </div>
 
+<!-- ══════════════════════════════════════════════
+     CANVAS: flores y mariposas cayendo
+══════════════════════════════════════════════ -->
+<script>
+(function() {
+  const canvas = document.getElementById("canvas-flores");
+  const ctx    = canvas.getContext("2d");
+
+  function resize() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener("resize", resize);
+
+  const EMOJIS = ["🌸","🌷","🦋","💮","🌺","✨","💕","🎀"];
+  const N = 28;
+  const particles = [];
+
+  for (let i = 0; i < N; i++) {
+    particles.push({
+      emoji:  EMOJIS[Math.floor(Math.random() * EMOJIS.length)],
+      x:      Math.random() * window.innerWidth,
+      y:      Math.random() * -window.innerHeight,
+      size:   16 + Math.random() * 18,
+      speed:  0.6 + Math.random() * 1.1,
+      drift:  (Math.random() - 0.5) * 0.8,
+      rot:    Math.random() * Math.PI * 2,
+      rotSpd: (Math.random() - 0.5) * 0.03,
+      alpha:  0.5 + Math.random() * 0.5,
+      swing:  Math.random() * Math.PI * 2,
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const h = canvas.height;
+    const w = canvas.width;
+
+    particles.forEach(p => {
+      p.swing += 0.015;
+      p.x     += p.drift + Math.sin(p.swing) * 0.5;
+      p.y     += p.speed;
+      p.rot   += p.rotSpd;
+
+      if (p.y > h + 40) {
+        p.y = -40;
+        p.x = Math.random() * w;
+        p.emoji = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
+      }
+
+      ctx.save();
+      ctx.globalAlpha = p.alpha;
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot);
+      ctx.font = `${p.size}px serif`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(p.emoji, 0, 0);
+      ctx.restore();
+    });
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
+
+<!-- ══════════════════════════════════════════════
+     MÚSICA Y LÓGICA
+══════════════════════════════════════════════ -->
 <script type="module">
-  import { initializeApp }  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getDatabase, ref, push, get, serverTimestamp }
-                            from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
   const firebaseConfig = {
     apiKey:            "AIzaSyD24pguFCa1X0x4pJ2JaBTJfN9MOoman28",
@@ -396,9 +561,13 @@
 
   const TOKEN_INVITADO = "invitado2024";
 
-  const app = initializeApp(firebaseConfig);
-  const db  = getDatabase(app);
+  const fbApp = initializeApp(firebaseConfig);
+  const db    = getDatabase(fbApp);
+  const audio = document.getElementById("audio-bg");
+  const btn   = document.getElementById("music-btn");
+  let musicaActiva = false;
 
+  // ── Verificar token ──
   const params = new URLSearchParams(window.location.search);
   if (params.get("token") !== TOKEN_INVITADO) {
     document.getElementById("denied").style.display = "flex";
@@ -406,11 +575,38 @@
     document.getElementById("denied").style.alignItems = "center";
   } else {
     document.getElementById("app").style.display = "block";
+    // Autoplay al primer toque/clic del usuario
+    document.addEventListener("click", iniciarMusica, { once: true });
+    document.addEventListener("touchstart", iniciarMusica, { once: true });
     if (sessionStorage.getItem("ya_vote")) {
-      mostrarGracias(sessionStorage.getItem("yv_nombre"), sessionStorage.getItem("yv_opcion"));
+      mostrarGracias(sessionStorage.getItem("yv_nombre"), sessionStorage.getItem("yv_opcion"), true);
     }
   }
 
+  function iniciarMusica() {
+    audio.volume = 0.55;
+    audio.play().then(() => {
+      musicaActiva = true;
+      btn.textContent = "🔊";
+      btn.classList.add("playing");
+    }).catch(() => {});
+  }
+
+  window.toggleMusica = function() {
+    if (audio.paused) {
+      audio.play();
+      musicaActiva = true;
+      btn.textContent = "🔊";
+      btn.classList.add("playing");
+    } else {
+      audio.pause();
+      musicaActiva = false;
+      btn.textContent = "🔇";
+      btn.classList.remove("playing");
+    }
+  };
+
+  // ── Votar ──
   window.votar = async function(opcion) {
     const nombre = document.getElementById("nombre").value.trim();
     if (!nombre) {
@@ -427,12 +623,11 @@
     document.getElementById("btn-no").disabled = true;
 
     try {
-      // Verificar si el nombre ya existe
       const snapshot = await get(ref(db, "votos"));
       if (snapshot.exists()) {
-        const votos = Object.values(snapshot.val());
-        const nombreNorm = nombre.toLowerCase().trim();
-        const yaExiste = votos.some(v => v.nombre && v.nombre.toLowerCase().trim() === nombreNorm);
+        const yaExiste = Object.values(snapshot.val()).some(
+          v => v.nombre && v.nombre.toLowerCase().trim() === nombre.toLowerCase().trim()
+        );
         if (yaExiste) {
           setMsg("⚠️ Este nombre ya fue registrado anteriormente.", "error");
           document.getElementById("btn-si").disabled = false;
@@ -449,7 +644,7 @@
       sessionStorage.setItem("ya_vote",   "1");
       sessionStorage.setItem("yv_nombre", nombre);
       sessionStorage.setItem("yv_opcion", opcion);
-      mostrarGracias(nombre, opcion);
+      mostrarGracias(nombre, opcion, false);
     } catch(e) {
       setMsg("Error de conexión. Intenta de nuevo.", "error");
       document.getElementById("btn-si").disabled = false;
@@ -457,35 +652,42 @@
     }
   };
 
-  function mostrarGracias(nombre, opcion) {
+  function mostrarGracias(nombre, opcion, sinContador) {
     document.getElementById("formulario").style.display = "none";
-    document.getElementById("gracias").style.display = "block";
+    document.getElementById("gracias").style.display    = "block";
+
     if (opcion === "si") {
-      document.getElementById("g-flores").textContent  = "🌸 🎀 🌸";
-      document.getElementById("g-titulo").textContent  = "¡Nos vemos allá!";
-      document.getElementById("g-sub").textContent     = "Tu asistencia fue confirmada 💕";
+      document.getElementById("g-flores").textContent = "🌸 🎀 🌸";
+      document.getElementById("g-titulo").textContent = "¡Nos vemos allá!";
+      document.getElementById("g-sub").textContent    = "Tu asistencia fue confirmada 💕";
       const n = document.getElementById("g-nombre");
-      n.textContent  = nombre + " — Sí asistirá 🎀";
-      n.className    = "resp-name";
+      n.textContent = nombre + " — Sí asistirá 🎀";
+      n.className   = "resp-name";
     } else {
-      document.getElementById("g-flores").textContent  = "💌 🌷 💌";
-      document.getElementById("g-titulo").textContent  = "¡Gracias por avisar!";
-      document.getElementById("g-sub").textContent     = "Te echaremos de menos 🌷";
+      document.getElementById("g-flores").textContent = "💌 🌷 💌";
+      document.getElementById("g-titulo").textContent = "¡Gracias por avisar!";
+      document.getElementById("g-sub").textContent    = "Te echaremos de menos 🌷";
       const n = document.getElementById("g-nombre");
-      n.textContent  = nombre + " — No podrá ir";
-      n.className    = "resp-name no";
+      n.textContent = nombre + " — No podrá ir";
+      n.className   = "resp-name no";
     }
 
-    // Cuenta regresiva de 10 segundos y cierre
+    if (sinContador) return;
+
+    // Cuenta regresiva con barra visual
     let seg = 10;
+    const fill   = document.getElementById("c-fill");
     const contEl = document.getElementById("contador");
-    const intervalo = setInterval(() => {
+    fill.style.width = "100%";
+
+    const iv = setInterval(() => {
       seg--;
       if (contEl) contEl.textContent = seg;
+      if (fill)   fill.style.width   = (seg * 10) + "%";
       if (seg <= 0) {
-        clearInterval(intervalo);
+        clearInterval(iv);
+        audio.pause();
         window.close();
-        // Si el navegador no permite cerrar, redirige a una página en blanco
         setTimeout(() => { window.location.href = "about:blank"; }, 300);
       }
     }, 1000);
@@ -494,7 +696,7 @@
   function setMsg(txt, tipo) {
     const el = document.getElementById("msg");
     el.textContent = txt;
-    el.className = "msg " + (tipo || "");
+    el.className   = "msg " + (tipo || "");
   }
 </script>
 </body>
