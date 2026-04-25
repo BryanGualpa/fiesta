@@ -3,552 +3,287 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>15 Años Julieth Melo 🌸</title>
+  <title>Panel — 15 Años Julieth 🌸</title>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --rosa:       #f4a7b9;
-      --rosa-dark:  #e07a95;
-      --rosa-light: #fde8ef;
-      --rosa-pale:  #fff0f5;
-      --lila:       #d8b4e2;
-      --menta:      #b5ddd8;
-      --menta-light:#e8f7f5;
-      --text:       #5a3a4a;
-      --muted:      #b08a9a;
-      --surface:    #ffffff;
+      --rosa:        #f4a7b9;
+      --rosa-dark:   #e07a95;
+      --rosa-light:  #fde8ef;
+      --rosa-pale:   #fff0f5;
+      --lila:        #d8b4e2;
+      --lila-light:  #f3e8fa;
+      --menta:       #b5ddd8;
+      --menta-light: #e8f7f5;
+      --crema:       #fdf6f0;
+      --text:        #5a3a4a;
+      --muted:       #b08a9a;
+      --surface:     #ffffff;
+      --border:      #f7d6e4;
+      --shadow:      0 4px 24px rgba(240,130,160,0.10);
     }
-
     body {
-      min-height: 100vh;
-      background: linear-gradient(135deg, #fde8ef 0%, #f3e8fa 45%, #e8f7f5 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem 1rem;
-      font-family: 'Jost', sans-serif;
+      background: linear-gradient(135deg, #fde8ef 0%, #f3e8fa 40%, #e8f7f5 100%);
       color: var(--text);
-      overflow-x: hidden;
+      font-family: 'Jost', sans-serif;
+      min-height: 100vh;
+      padding: 2rem 1rem 4rem;
     }
 
-    /* ══════════════════════════════════
-       CANVAS DE PARTÍCULAS (fondo)
-    ══════════════════════════════════ */
-    #canvas-flores {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    /* ══════════════════════════════════
-       BOTÓN DE MÚSICA
-    ══════════════════════════════════ */
-    #music-btn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 100;
-      width: 48px; height: 48px;
-      border-radius: 50%;
-      border: none;
-      background: linear-gradient(135deg, var(--rosa), var(--lila));
-      color: white;
-      font-size: 1.3rem;
-      cursor: pointer;
-      box-shadow: 0 4px 16px rgba(240,130,160,0.45);
-      transition: transform .2s;
-      display: flex; align-items: center; justify-content: center;
-    }
-    #music-btn:hover { transform: scale(1.1); }
-    #music-btn.playing { animation: pulse-btn 1.5s infinite; }
-    @keyframes pulse-btn {
-      0%,100% { box-shadow: 0 4px 16px rgba(240,130,160,0.45); }
-      50%      { box-shadow: 0 4px 28px rgba(240,130,160,0.8); }
-    }
-
-    /* ══════════════════════════════════
-       ACCESO DENEGADO
-    ══════════════════════════════════ */
-    #denied {
-      display: none;
-      text-align: center;
-      background: var(--surface);
-      border-radius: 24px;
-      padding: 3rem 2rem;
-      box-shadow: 0 8px 40px rgba(240,130,160,0.15);
-      max-width: 360px;
-      position: relative; z-index: 1;
-    }
-    #denied .lock { font-size: 3rem; margin-bottom: 1rem; }
+    /* ── ACCESO DENEGADO ── */
+    #denied { display:none; text-align:center; max-width:360px; margin:8rem auto; background:var(--surface); border-radius:24px; padding:3rem 2rem; box-shadow:var(--shadow); }
+    #denied .lock { font-size:3rem; margin-bottom:1rem; }
     #denied h2 { font-family:'Great Vibes',cursive; font-size:2.2rem; color:var(--rosa-dark); margin-bottom:.5rem; }
     #denied p { color:var(--muted); font-size:.9rem; }
 
-    /* ══════════════════════════════════
-       TARJETA PRINCIPAL
-    ══════════════════════════════════ */
-    #app {
-      display: none;
-      width: 100%;
-      max-width: 500px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .card {
-      background: var(--surface);
-      border-radius: 28px;
-      box-shadow: 0 16px 60px rgba(240,130,160,0.22), 0 2px 12px rgba(0,0,0,0.05);
-      overflow: hidden;
-      animation: fadeUp .8s ease;
-    }
-    @keyframes fadeUp {
-      from { opacity:0; transform:translateY(30px); }
-      to   { opacity:1; transform:translateY(0); }
-    }
+    /* ── APP ── */
+    #app { display:none; max-width:720px; margin:0 auto; }
 
     /* ── HEADER ── */
-    .card-header {
-      background: linear-gradient(160deg, #fde8ef 0%, #f3e8fa 60%, #e8f7f5 100%);
-      padding: 2.2rem 2rem 1.5rem;
-      text-align: center;
-      position: relative;
-      border-bottom: 1px solid #f7d6e4;
+    .page-header {
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 1.5rem 1.8rem;
+      margin-bottom: 1.2rem;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
     }
-
-    /* Corona decorativa */
-    .corona {
-      font-size: 2rem;
-      display: block;
-      margin-bottom: .3rem;
-      animation: float 3s ease-in-out infinite;
+    .header-left .eyebrow {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--rosa-dark);
+      margin-bottom: 4px;
+      font-weight: 500;
     }
-    @keyframes float {
-      0%,100% { transform: translateY(0); }
-      50%      { transform: translateY(-6px); }
-    }
-
-    .flores-top {
-      font-size: 1.4rem;
-      letter-spacing: 6px;
-      margin-bottom: .8rem;
-      opacity: .75;
-    }
-
-    .xv-badge {
-      display: inline-block;
-      background: linear-gradient(135deg, var(--rosa), var(--lila));
-      color: white;
+    .header-left h1 {
       font-family: 'Great Vibes', cursive;
-      font-size: 1.2rem;
-      padding: 6px 22px;
-      border-radius: 30px;
-      margin-bottom: 1rem;
-      letter-spacing: 1px;
-      box-shadow: 0 4px 14px rgba(240,130,160,0.35);
-    }
-
-    .nombre-quinceañera {
-      font-family: 'Great Vibes', cursive;
-      font-size: 3.4rem;
+      font-size: 2.2rem;
       color: var(--rosa-dark);
       line-height: 1.1;
-      margin-bottom: .3rem;
-      text-shadow: 0 2px 12px rgba(224,122,149,0.25);
-      animation: shimmer 4s ease-in-out infinite;
     }
-    @keyframes shimmer {
-      0%,100% { text-shadow: 0 2px 12px rgba(224,122,149,0.25); }
-      50%      { text-shadow: 0 4px 24px rgba(224,122,149,0.55); }
-    }
-
-    .xv-numero {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1rem;
-      font-style: italic;
-      color: var(--muted);
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      margin-bottom: .5rem;
-    }
-
-    /* Línea decorativa */
-    .divider {
+    .live-badge {
       display: flex;
       align-items: center;
-      gap: 8px;
-      justify-content: center;
-      margin: .8rem 0;
-      opacity: .5;
-      font-size: .85rem;
-    }
-    .divider::before, .divider::after {
-      content: '';
-      flex: 1;
-      max-width: 60px;
-      height: 1px;
-      background: var(--rosa);
-    }
-
-    .evento-info {
-      display: flex;
-      justify-content: center;
-      gap: 0;
-      margin-top: .8rem;
-    }
-    .info-pill {
-      background: white;
-      border: 1px solid #f7d6e4;
-      padding: 8px 14px;
-      font-size: 11.5px;
-      color: var(--muted);
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-    .info-pill:first-child { border-radius: 20px 0 0 20px; border-right: none; }
-    .info-pill:last-child  { border-radius: 0 20px 20px 0; border-left: none; }
-    .info-pill strong { color: var(--text); font-weight: 500; }
-
-    /* Mariposas decorativas en header */
-    .mariposas-header {
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      pointer-events: none;
-      overflow: hidden;
-    }
-    .m-deco {
-      position: absolute;
-      font-size: 1.1rem;
-      opacity: .35;
-      animation: flutter-deco 4s ease-in-out infinite;
-    }
-    .m-deco:nth-child(1) { top:10%; left:5%;  animation-delay: 0s; }
-    .m-deco:nth-child(2) { top:20%; right:8%; animation-delay: 1s; }
-    .m-deco:nth-child(3) { top:60%; left:8%; animation-delay: 2s; }
-    .m-deco:nth-child(4) { top:70%; right:5%; animation-delay: .5s; }
-    @keyframes flutter-deco {
-      0%,100% { transform: translateY(0) rotate(-5deg); }
-      50%      { transform: translateY(-8px) rotate(5deg); }
-    }
-
-    /* ── CUERPO ── */
-    .card-body { padding: 2rem 2rem 2.2rem; }
-
-    .pregunta {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.5rem;
-      font-weight: 300;
-      font-style: italic;
-      color: var(--text);
-      text-align: center;
-      margin-bottom: .5rem;
-      line-height: 1.35;
-    }
-    .subtexto {
-      font-size: .82rem;
-      color: var(--muted);
-      text-align: center;
-      margin-bottom: 1.6rem;
-      line-height: 1.7;
-    }
-
-    .field-label {
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 7px;
-      display: block;
-    }
-    input[type="text"] {
-      width: 100%;
-      padding: 13px 16px;
-      border: 1.5px solid #f7d6e4;
-      border-radius: 14px;
-      font-family: 'Jost', sans-serif;
-      font-size: .95rem;
-      color: var(--text);
-      background: var(--rosa-pale);
-      outline: none;
-      transition: border-color .2s, background .2s, box-shadow .2s;
-      margin-bottom: 1.4rem;
-    }
-    input[type="text"]:focus {
-      border-color: var(--rosa);
-      background: #fff;
-      box-shadow: 0 0 0 3px rgba(244,167,185,0.2);
-    }
-    input[type="text"]::placeholder { color: #d4b0be; }
-
-    /* ── BOTONES ── */
-    .btns { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .btn {
-      border: 2px solid transparent;
-      border-radius: 16px;
-      padding: 1.3rem 1rem;
-      cursor: pointer;
-      font-family: 'Jost', sans-serif;
-      display: flex; flex-direction: column; align-items: center; gap: 5px;
-      transition: all .22s;
-      position: relative; overflow: hidden;
-    }
-    .btn::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: white;
-      opacity: 0;
-      transition: opacity .15s;
-    }
-    .btn:active::after { opacity: .15; }
-    .btn:disabled { cursor: default; opacity: .7; }
-
-    .btn-si {
-      background: linear-gradient(135deg, #fde8ef, #f3e8fa);
-      border-color: var(--rosa);
-    }
-    .btn-si:hover:not(:disabled) {
-      background: linear-gradient(135deg, var(--rosa), var(--lila));
-      transform: translateY(-3px);
-      box-shadow: 0 10px 28px rgba(240,130,160,0.38);
-    }
-    .btn-si:hover:not(:disabled) .btn-word,
-    .btn-si:hover:not(:disabled) .btn-hint { color: white; }
-
-    .btn-no {
-      background: var(--menta-light);
-      border-color: var(--menta);
-    }
-    .btn-no:hover:not(:disabled) {
-      background: var(--menta);
-      transform: translateY(-3px);
-      box-shadow: 0 10px 28px rgba(181,221,216,0.5);
-    }
-
-    .btn .btn-icon { font-size: 1.8rem; }
-    .btn .btn-word { font-size: 1rem; font-weight: 500; color: var(--text); }
-    .btn .btn-hint { font-size: 11px; color: var(--muted); }
-
-    .msg {
-      margin-top: 1rem; min-height: 18px;
-      font-size: 13px; text-align: center;
-      color: var(--muted); font-style: italic;
-    }
-    .msg.error { color: var(--rosa-dark); font-style: normal; }
-
-    /* ── GRACIAS ── */
-    #gracias { display:none; text-align:center; padding:1rem 0 .5rem; }
-    .gracias-flores { font-size: 2.5rem; margin-bottom: .8rem; letter-spacing: 5px; }
-    #gracias h2 {
-      font-family: 'Great Vibes', cursive;
-      font-size: 2.8rem; color: var(--rosa-dark); margin-bottom: .4rem;
-    }
-    #gracias .sub { color:var(--muted); font-size:.9rem; margin-bottom:.5rem; }
-    #gracias .resp-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.2rem; font-style: italic; color: var(--text);
-      background: var(--rosa-light); border-radius: 30px;
-      padding: 8px 24px; display: inline-block; margin-top: .3rem;
-      border: 1px solid #f7d6e4;
-    }
-    #gracias .resp-name.no { background: var(--menta-light); border-color: var(--menta); }
-
-    .countdown-bar {
-      margin-top: 1.2rem;
-      height: 4px;
-      background: #f7d6e4;
-      border-radius: 2px;
-      overflow: hidden;
-    }
-    .countdown-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--rosa), var(--lila));
-      border-radius: 2px;
-      width: 100%;
-      transition: width 1s linear;
-    }
-    .countdown-txt {
-      margin-top: .5rem;
+      gap: 6px;
       font-size: 12px;
       color: var(--muted);
+      margin-top: 4px;
     }
+    .live-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #2d7a5f;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
 
-    /* ── FOOTER ── */
-    .card-footer {
-      text-align: center;
-      padding: .8rem 2rem 1.1rem;
-      font-size: 11px; color: var(--muted);
-      letter-spacing: 1px;
-      border-top: 1px solid #f7d6e4;
+    .export-btn {
+      background: linear-gradient(135deg, var(--rosa), var(--lila));
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 10px 18px;
+      font-family: 'Jost', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .2s;
+      white-space: nowrap;
     }
+    .export-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(240,130,160,0.4); }
+
+    /* ── STATS ── */
+    .stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 1.2rem; }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.1rem 1rem;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+    .stat-card .num {
+      font-family: 'Jost', sans-serif;
+      font-size: 2.8rem;
+      font-weight: 600;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat-card .lbl { font-size: 11px; color: var(--muted); letter-spacing: .5px; }
+    .stat-card.total .num { color: var(--text); }
+    .stat-card.si-c  .num { color: #2d7a5f; }
+    .stat-card.no-c  .num { color: var(--rosa-dark); }
+
+    /* ── BARRA ── */
+    .prog-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1rem 1.2rem;
+      margin-bottom: 1.2rem;
+      box-shadow: var(--shadow);
+    }
+    .prog-label { display:flex; justify-content:space-between; font-size:12px; color:var(--muted); margin-bottom:8px; }
+    .prog-track { height:8px; background:var(--rosa-light); border-radius:4px; overflow:hidden; }
+    .prog-fill  { height:100%; background:linear-gradient(90deg, #2d7a5f, #4caf86); border-radius:4px; transition:width .6s ease; }
+
+    /* ── BÚSQUEDA Y FILTROS ── */
+    .controls {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1rem 1.2rem;
+      margin-bottom: 1.2rem;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .search-wrap { position:relative; }
+    .search-wrap input {
+      width: 100%;
+      padding: 11px 16px 11px 38px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-family: 'Jost', sans-serif;
+      font-size: 14px;
+      background: var(--rosa-pale);
+      outline: none;
+      color: var(--text);
+      transition: border-color .2s;
+    }
+    .search-wrap input:focus { border-color: var(--rosa); background:#fff; }
+    .search-wrap .ico { position:absolute; left:12px; top:50%; transform:translateY(-50%); font-size:14px; color:var(--muted); }
+
+    .filters { display:flex; gap:8px; flex-wrap:wrap; }
+    .filter-btn {
+      padding: 7px 16px;
+      border-radius: 20px;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      font-family: 'Jost', sans-serif;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all .15s;
+      color: var(--muted);
+    }
+    .filter-btn:hover { border-color: var(--rosa); color: var(--text); }
+    .filter-btn.active { background: linear-gradient(135deg, var(--rosa), var(--lila)); border-color: transparent; color: #fff; }
+
+    /* ── LISTA ── */
+    .lista { display:flex; flex-direction:column; gap:8px; }
+
+    .persona {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: .9rem 1.1rem;
+      box-shadow: 0 1px 8px rgba(240,130,160,0.06);
+      animation: slideIn .25s ease;
+    }
+    @keyframes slideIn { from{opacity:0;transform:translateY(6px);} to{opacity:1;transform:translateY(0);} }
+
+    .persona.si-row { border-left: 3px solid #2d7a5f; }
+    .persona.no-row { border-left: 3px solid var(--rosa-dark); }
+
+    .avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 600; font-size: 14px;
+      flex-shrink: 0;
+    }
+    .avatar.si { background: #edf7f3; color: #2d7a5f; }
+    .avatar.no { background: var(--rosa-light); color: var(--rosa-dark); }
+
+    .persona-info { flex:1; min-width:0; }
+    .persona-nombre { font-weight:500; font-size:.95rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .persona-fecha  { font-size:11px; color:var(--muted); margin-top:1px; }
+
+    .badge {
+      font-size: 11px; font-weight: 500;
+      padding: 4px 12px; border-radius: 20px;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .badge.si { background: #edf7f3; color: #2d7a5f; border: 1px solid #a8d8c8; }
+    .badge.no { background: var(--rosa-light); color: var(--rosa-dark); border: 1px solid #f4a7b9; }
+
+    .empty { text-align:center; padding:3rem 1rem; color:var(--muted); background:var(--surface); border-radius:16px; border:1px solid var(--border); }
+    .empty .icon { font-size:2.5rem; margin-bottom:.7rem; }
+    .empty p { font-size:.9rem; }
   </style>
 </head>
 <body>
 
-<!-- Canvas flores y mariposas cayendo -->
-<canvas id="canvas-flores"></canvas>
-
-<!-- Botón música -->
-<button id="music-btn" onclick="toggleMusica()" title="Música">🎵</button>
-
-<!-- Audio -->
-<audio id="audio-bg" loop preload="auto">
-  <source src="musica.mp3" type="audio/mpeg"/>
-</audio>
-
-<!-- Acceso denegado -->
 <div id="denied">
   <div class="lock">🔒</div>
-  <h2>Invitación privada</h2>
-  <p>Necesitas un link de invitación para ver esta página.</p>
+  <h2>Acceso restringido</h2>
+  <p>Esta página es solo para el organizador.</p>
 </div>
 
-<!-- App principal -->
 <div id="app">
-  <div class="card">
 
-    <!-- Header -->
-    <div class="card-header">
-      <div class="mariposas-header">
-        <span class="m-deco">🦋</span>
-        <span class="m-deco">🌸</span>
-        <span class="m-deco">🦋</span>
-        <span class="m-deco">🌸</span>
-      </div>
-      <span class="corona">👑</span>
-      <div class="flores-top">🌸 🌷 💐 🌷 🌸</div>
-      <div class="xv-badge">✨ Quinceañera ✨</div>
-      <div class="nombre-quinceañera">Julieth Melo</div>
-      <div class="xv-numero">— Mis 15 Años —</div>
-      <div class="divider">🌸</div>
-      <div class="evento-info">
-        <div class="info-pill">📅 <strong>Domingo 13 de Septiembre</strong></div>
-        <div class="info-pill">🕖 <strong>7:00 PM</strong></div>
+  <div class="page-header">
+    <div class="header-left">
+      <div class="eyebrow">🌸 15 Años de Julieth Melo — Panel de administrador</div>
+      <h1>Lista de asistencia</h1>
+      <div class="live-badge">
+        <div class="live-dot"></div>
+        <span id="live-txt">Conectando...</span>
       </div>
     </div>
+    <button class="export-btn" onclick="exportarCSV()">⬇ Exportar CSV</button>
+  </div>
 
-    <!-- Formulario -->
-    <div class="card-body">
-      <div id="formulario">
-        <p class="pregunta">¿Nos acompañarás a celebrar esta noche tan especial?</p>
-        <p class="subtexto">Con la bendición de Dios y el amor de mi familia, te invito a compartir este día. Confirma tu asistencia con tu nombre completo.</p>
+  <div class="stats">
+    <div class="stat-card total"><div class="num" id="n-total">—</div><div class="lbl">Total respuestas</div></div>
+    <div class="stat-card si-c"> <div class="num" id="n-si">—</div>   <div class="lbl">Asistirán ✓</div></div>
+    <div class="stat-card no-c"> <div class="num" id="n-no">—</div>   <div class="lbl">No podrán ir ✕</div></div>
+  </div>
 
-        <label class="field-label" for="nombre">Tu nombre y apellido</label>
-        <input type="text" id="nombre" placeholder="Ej: María García" autocomplete="name"/>
-
-        <div class="btns">
-          <button class="btn btn-si" id="btn-si" onclick="votar('si')">
-            <span class="btn-icon">🎀</span>
-            <span class="btn-word">¡Sí asistiré!</span>
-            <span class="btn-hint">Con mucho gusto</span>
-          </button>
-          <button class="btn btn-no" id="btn-no" onclick="votar('no')">
-            <span class="btn-icon">💌</span>
-            <span class="btn-word">No podré ir</span>
-            <span class="btn-hint">Lo siento mucho</span>
-          </button>
-        </div>
-        <div class="msg" id="msg"></div>
-      </div>
-
-      <!-- Pantalla gracias -->
-      <div id="gracias">
-        <div class="gracias-flores" id="g-flores">🌸 🎀 🌸</div>
-        <h2 id="g-titulo">¡Gracias!</h2>
-        <p class="sub" id="g-sub">Tu respuesta fue registrada</p>
-        <span class="resp-name" id="g-nombre"></span>
-        <div class="countdown-bar"><div class="countdown-fill" id="c-fill"></div></div>
-        <p class="countdown-txt">Cerrando en <strong id="contador">10</strong> segundos...</p>
-      </div>
+  <div class="prog-wrap">
+    <div class="prog-label">
+      <span>Porcentaje que asistirá</span>
+      <span id="pct-txt">—%</span>
     </div>
+    <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+  </div>
 
-    <div class="card-footer">
-      🌷 &nbsp; Con amor, Maria Castro &amp; Jonathan Buenaño &nbsp; 🌷
+  <div class="controls">
+    <div class="search-wrap">
+      <span class="ico">🔍</span>
+      <input type="text" id="buscar" placeholder="Buscar por nombre..." oninput="renderLista()"/>
+    </div>
+    <div class="filters">
+      <button class="filter-btn active" data-f="todos" onclick="setFiltro(this)">Todos</button>
+      <button class="filter-btn" data-f="si" onclick="setFiltro(this)">✓ Asistirán</button>
+      <button class="filter-btn" data-f="no" onclick="setFiltro(this)">✕ No asistirán</button>
     </div>
   </div>
+
+  <div class="lista" id="lista">
+    <div class="empty"><div class="icon">🌸</div><p>Cargando datos...</p></div>
+  </div>
+
 </div>
 
-<!-- ══════════════════════════════════════════════
-     CANVAS: flores y mariposas cayendo
-══════════════════════════════════════════════ -->
-<script>
-(function() {
-  const canvas = document.getElementById("canvas-flores");
-  const ctx    = canvas.getContext("2d");
-
-  function resize() {
-    canvas.width  = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-  resize();
-  window.addEventListener("resize", resize);
-
-  const EMOJIS = ["🌸","🌷","🦋","💮","🌺","✨","💕","🎀"];
-  const N = 28;
-  const particles = [];
-
-  for (let i = 0; i < N; i++) {
-    particles.push({
-      emoji:  EMOJIS[Math.floor(Math.random() * EMOJIS.length)],
-      x:      Math.random() * window.innerWidth,
-      y:      Math.random() * -window.innerHeight,
-      size:   16 + Math.random() * 18,
-      speed:  0.6 + Math.random() * 1.1,
-      drift:  (Math.random() - 0.5) * 0.8,
-      rot:    Math.random() * Math.PI * 2,
-      rotSpd: (Math.random() - 0.5) * 0.03,
-      alpha:  0.5 + Math.random() * 0.5,
-      swing:  Math.random() * Math.PI * 2,
-    });
-  }
-
-  function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const h = canvas.height;
-    const w = canvas.width;
-
-    particles.forEach(p => {
-      p.swing += 0.015;
-      p.x     += p.drift + Math.sin(p.swing) * 0.5;
-      p.y     += p.speed;
-      p.rot   += p.rotSpd;
-
-      if (p.y > h + 40) {
-        p.y = -40;
-        p.x = Math.random() * w;
-        p.emoji = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
-      }
-
-      ctx.save();
-      ctx.globalAlpha = p.alpha;
-      ctx.translate(p.x, p.y);
-      ctx.rotate(p.rot);
-      ctx.font = `${p.size}px serif`;
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillText(p.emoji, 0, 0);
-      ctx.restore();
-    });
-
-    requestAnimationFrame(draw);
-  }
-  draw();
-})();
-</script>
-
-<!-- ══════════════════════════════════════════════
-     MÚSICA Y LÓGICA
-══════════════════════════════════════════════ -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getDatabase, ref, push, get, serverTimestamp }
-    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+  import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
+  // ════════════════════════════════════════════════
+  //  CONFIGURACIÓN — mismos datos que index.html
+  // ════════════════════════════════════════════════
   const firebaseConfig = {
     apiKey:            "AIzaSyD24pguFCa1X0x4pJ2JaBTJfN9MOoman28",
     authDomain:        "fiesta-84835.firebaseapp.com",
@@ -559,145 +294,100 @@
     appId:             "1:668059109240:web:4557991532e0f099226a8d"
   };
 
-  const TOKEN_INVITADO = "invitado2024";
+  const TOKEN_ADMIN = "admin2024secret";
+  // ════════════════════════════════════════════════
 
-  const fbApp = initializeApp(firebaseConfig);
-  const db    = getDatabase(fbApp);
-  const audio = document.getElementById("audio-bg");
-  const btn   = document.getElementById("music-btn");
-  let musicaActiva = false;
-
-  // ── Verificar token ──
   const params = new URLSearchParams(window.location.search);
-  if (params.get("token") !== TOKEN_INVITADO) {
-    document.getElementById("denied").style.display = "flex";
-    document.getElementById("denied").style.flexDirection = "column";
-    document.getElementById("denied").style.alignItems = "center";
+  if (params.get("token") !== TOKEN_ADMIN) {
+    document.getElementById("denied").style.display = "block";
   } else {
     document.getElementById("app").style.display = "block";
-    // Autoplay al primer toque/clic del usuario
-    document.addEventListener("click", iniciarMusica, { once: true });
-    document.addEventListener("touchstart", iniciarMusica, { once: true });
-    if (sessionStorage.getItem("ya_vote")) {
-      mostrarGracias(sessionStorage.getItem("yv_nombre"), sessionStorage.getItem("yv_opcion"), true);
-    }
+    iniciar();
   }
 
-  function iniciarMusica() {
-    audio.volume = 0.55;
-    audio.play().then(() => {
-      musicaActiva = true;
-      btn.textContent = "🔊";
-      btn.classList.add("playing");
-    }).catch(() => {});
+  let todosLosVotos = [];
+  let filtroActivo  = "todos";
+
+  function iniciar() {
+    const app = initializeApp(firebaseConfig);
+    const db  = getDatabase(app);
+
+    // Escucha en TIEMPO REAL — se actualiza solo cuando alguien vota
+    onValue(ref(db, "votos"), (snapshot) => {
+      const data = snapshot.val();
+      todosLosVotos = data
+        ? Object.values(data).sort((a,b) => (b.timestamp||0) - (a.timestamp||0))
+        : [];
+      actualizarStats();
+      renderLista();
+      const hora = new Date().toLocaleTimeString("es-EC");
+      document.getElementById("live-txt").textContent = `En vivo · ${hora}`;
+    }, (error) => {
+      document.getElementById("live-txt").textContent = "Error al conectar con Firebase";
+      document.getElementById("lista").innerHTML = `<div class="empty"><div class="icon">⚠️</div><p>Error: ${error.message}</p></div>`;
+    });
   }
 
-  window.toggleMusica = function() {
-    if (audio.paused) {
-      audio.play();
-      musicaActiva = true;
-      btn.textContent = "🔊";
-      btn.classList.add("playing");
-    } else {
-      audio.pause();
-      musicaActiva = false;
-      btn.textContent = "🔇";
-      btn.classList.remove("playing");
-    }
-  };
+  function actualizarStats() {
+    const si    = todosLosVotos.filter(v => v.opcion === "si").length;
+    const no    = todosLosVotos.filter(v => v.opcion === "no").length;
+    const total = todosLosVotos.length;
+    const pct   = total ? Math.round(si / total * 100) : 0;
+    document.getElementById("n-total").textContent   = total;
+    document.getElementById("n-si").textContent      = si;
+    document.getElementById("n-no").textContent      = no;
+    document.getElementById("pct-txt").textContent   = pct + "%";
+    document.getElementById("prog-fill").style.width = pct + "%";
+  }
 
-  // ── Votar ──
-  window.votar = async function(opcion) {
-    const nombre = document.getElementById("nombre").value.trim();
-    if (!nombre) {
-      setMsg("Por favor escribe tu nombre y apellido 🌸", "error");
-      document.getElementById("nombre").focus();
+  window.renderLista = function() {
+    const busqueda = document.getElementById("buscar").value.toLowerCase().trim();
+    let votos = todosLosVotos;
+    if (filtroActivo !== "todos") votos = votos.filter(v => v.opcion === filtroActivo);
+    if (busqueda) votos = votos.filter(v => v.nombre && v.nombre.toLowerCase().includes(busqueda));
+
+    const lista = document.getElementById("lista");
+    if (votos.length === 0) {
+      lista.innerHTML = `<div class="empty"><div class="icon">${busqueda?"🔍":"📭"}</div><p>${busqueda?"Sin resultados para esa búsqueda.":"Todavía no hay respuestas."}</p></div>`;
       return;
     }
-    if (nombre.split(" ").filter(Boolean).length < 2) {
-      setMsg("Escribe tu nombre Y apellido separados por espacio.", "error");
-      return;
-    }
-    setMsg("Verificando... 💕", "");
-    document.getElementById("btn-si").disabled = true;
-    document.getElementById("btn-no").disabled = true;
-
-    try {
-      const snapshot = await get(ref(db, "votos"));
-      if (snapshot.exists()) {
-        const yaExiste = Object.values(snapshot.val()).some(
-          v => v.nombre && v.nombre.toLowerCase().trim() === nombre.toLowerCase().trim()
-        );
-        if (yaExiste) {
-          setMsg("⚠️ Este nombre ya fue registrado anteriormente.", "error");
-          document.getElementById("btn-si").disabled = false;
-          document.getElementById("btn-no").disabled = false;
-          return;
-        }
-      }
-
-      await push(ref(db, "votos"), {
-        nombre, opcion,
-        fecha: new Date().toLocaleString("es-EC", { dateStyle:"short", timeStyle:"short" }),
-        timestamp: serverTimestamp()
-      });
-      sessionStorage.setItem("ya_vote",   "1");
-      sessionStorage.setItem("yv_nombre", nombre);
-      sessionStorage.setItem("yv_opcion", opcion);
-      mostrarGracias(nombre, opcion, false);
-    } catch(e) {
-      setMsg("Error de conexión. Intenta de nuevo.", "error");
-      document.getElementById("btn-si").disabled = false;
-      document.getElementById("btn-no").disabled = false;
-    }
+    lista.innerHTML = votos.map(v => {
+      const iniciales = (v.nombre||"?").trim().split(" ").slice(0,2).map(n=>n[0].toUpperCase()).join("");
+      const esSi = v.opcion === "si";
+      return `
+        <div class="persona ${esSi?"si-row":"no-row"}">
+          <div class="avatar ${esSi?"si":"no"}">${iniciales}</div>
+          <div class="persona-info">
+            <div class="persona-nombre">${v.nombre||"Sin nombre"}</div>
+            <div class="persona-fecha">${v.fecha||""}</div>
+          </div>
+          <span class="badge ${esSi?"si":"no"}">${esSi?"🎀 Asistirá":"💌 No asistirá"}</span>
+        </div>`;
+    }).join("");
   };
 
-  function mostrarGracias(nombre, opcion, sinContador) {
-    document.getElementById("formulario").style.display = "none";
-    document.getElementById("gracias").style.display    = "block";
+  window.setFiltro = function(btn) {
+    document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    filtroActivo = btn.dataset.f;
+    renderLista();
+  };
 
-    if (opcion === "si") {
-      document.getElementById("g-flores").textContent = "🌸 🎀 🌸";
-      document.getElementById("g-titulo").textContent = "¡Nos vemos allá!";
-      document.getElementById("g-sub").textContent    = "Tu asistencia fue confirmada 💕";
-      const n = document.getElementById("g-nombre");
-      n.textContent = nombre + " — Sí asistirá 🎀";
-      n.className   = "resp-name";
-    } else {
-      document.getElementById("g-flores").textContent = "💌 🌷 💌";
-      document.getElementById("g-titulo").textContent = "¡Gracias por avisar!";
-      document.getElementById("g-sub").textContent    = "Te echaremos de menos 🌷";
-      const n = document.getElementById("g-nombre");
-      n.textContent = nombre + " — No podrá ir";
-      n.className   = "resp-name no";
-    }
-
-    if (sinContador) return;
-
-    // Cuenta regresiva con barra visual
-    let seg = 10;
-    const fill   = document.getElementById("c-fill");
-    const contEl = document.getElementById("contador");
-    fill.style.width = "100%";
-
-    const iv = setInterval(() => {
-      seg--;
-      if (contEl) contEl.textContent = seg;
-      if (fill)   fill.style.width   = (seg * 10) + "%";
-      if (seg <= 0) {
-        clearInterval(iv);
-        audio.pause();
-        window.close();
-        setTimeout(() => { window.location.href = "about:blank"; }, 300);
-      }
-    }, 1000);
-  }
-
-  function setMsg(txt, tipo) {
-    const el = document.getElementById("msg");
-    el.textContent = txt;
-    el.className   = "msg " + (tipo || "");
-  }
+  window.exportarCSV = function() {
+    if (!todosLosVotos.length) { alert("No hay datos para exportar."); return; }
+    const filas = [["Nombre","Respuesta","Fecha"]];
+    todosLosVotos.forEach(v => filas.push([
+      v.nombre||"",
+      v.opcion==="si"?"Sí asistirá":"No asistirá",
+      v.fecha||""
+    ]));
+    const csv  = filas.map(f=>f.map(c=>`"${c}"`).join(",")).join("\n");
+    const blob = new Blob(["\uFEFF"+csv], {type:"text/csv;charset=utf-8;"});
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement("a");
+    a.href = url; a.download = "asistencia_fiesta.csv"; a.click();
+    URL.revokeObjectURL(url);
+  };
 </script>
 </body>
 </html>
